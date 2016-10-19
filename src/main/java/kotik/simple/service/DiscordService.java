@@ -17,8 +17,7 @@ import sx.blah.discord.util.RateLimitException;
 @Service
 public class DiscordService {
 
-    //private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc";
-    private final String TOKEN = "MjMxMDUxMzI1NjI5MTM2ODk2.CukZRg.vzaG9R6xPp2vLWJR4w-9RXbIzAw";
+    private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc";
 
     private boolean login;
 

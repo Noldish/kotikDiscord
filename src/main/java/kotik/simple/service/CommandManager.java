@@ -3,6 +3,7 @@ package kotik.simple.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MissingPermissionsException;
 import sx.blah.discord.util.RateLimitException;
@@ -16,6 +17,8 @@ import java.util.regex.Pattern;
 @Service
 public class CommandManager {
 
+    private final String COMMAND_PATTERN = "^!.*";
+
     @Autowired
     private DiscordService discordService;
 
@@ -23,10 +26,11 @@ public class CommandManager {
         return "Anus sebe derni, pes";
     }
 
-    public void message(String message, IChannel channel) {
-        if (checkWithRegExp(message)){
+    public void process(IMessage message){
+
+        if (isCommand(message.getContent())){
             try {
-                discordService.sendMessage("Sam svoi komandi vipolniay, pes",channel);
+                discordService.sendMessage("Sam svoi komandi vipolniay, pes",message.getChannel());
             } catch (RateLimitException e) {
                 e.printStackTrace();
             } catch (DiscordException e) {
@@ -37,11 +41,8 @@ public class CommandManager {
         }
     }
 
-
-    public static boolean checkWithRegExp(String userNameString){
-        Pattern p = Pattern.compile("^!.*");
-        Matcher m = p.matcher(userNameString);
-        return m.matches();
+    public boolean isCommand(String message){
+        return message.matches(COMMAND_PATTERN);
     }
 
 }

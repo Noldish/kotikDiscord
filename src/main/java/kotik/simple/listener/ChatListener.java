@@ -12,11 +12,11 @@ import sx.blah.discord.handle.obj.IMessage;
 public class ChatListener implements IListener<MessageReceivedEvent> {
 
     @Autowired
-    private CommandManager manager;
+    private CommandManager commandManager;
 
     @Override
     public void handle(MessageReceivedEvent messageReceivedEvent) {
         IMessage message = messageReceivedEvent.getMessage();
-        manager.message(message.getContent(),message.getChannel());
+        commandManager.process(message);
     }
 }

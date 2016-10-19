@@ -14,8 +14,8 @@ public class AddCommand implements CommandInterface {
     @Override
     public void eval(IMessage message, CommandManager commandManager){
         String[] parsedMessage = message.getContent().substring(4).trim().split(separator);
-        String mes = parsedMessage[0];
-        String resp = parsedMessage[1];
+        String mes = parsedMessage[0].trim();
+        String resp = parsedMessage[1].trim();
 
         commandManager.getDiscordService().sendMessage(commandManager.addCommand(mes, resp), message.getChannel());
     }

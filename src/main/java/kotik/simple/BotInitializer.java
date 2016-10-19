@@ -13,16 +13,11 @@ import org.springframework.stereotype.Component;
 public class BotInitializer {
 
     @Autowired
-    private DiscordClient discord;
-
-    @Autowired
-    private InterfaceListener interfaceListener;
-
-    @Autowired
-    private ChatListener chatListener;
-
-    public BotInitializer(DiscordClient discord) {
+    public BotInitializer(DiscordClient discord,InterfaceListener interfaceListener,ChatListener chatListener) {
         discord.dispather.registerListener(interfaceListener);
         discord.dispather.registerListener(chatListener);
+    }
+
+    public BotInitializer() {
     }
 }

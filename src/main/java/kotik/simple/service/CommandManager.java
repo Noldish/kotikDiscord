@@ -69,6 +69,7 @@ public class CommandManager {
     }
 
     public String addCommand(String message, String response){
+        System.out.println("Adding command: message=" + message + "; response = " + response);
         if (!commands.containsKey(message)) {
             commands.put(message, response);
             return "Ok";
@@ -77,4 +78,16 @@ public class CommandManager {
         }
     }
 
+    public String deleteCommand(String message){
+        if (commands.containsKey(message)){
+            commands.remove(message);
+            return "Ok";
+        } else {
+            return "This command doesn't exist";
+        }
+    }
+
+    public Map<String, String> getCommands() {
+        return commands;
+    }
 }

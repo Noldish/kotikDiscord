@@ -33,6 +33,10 @@ public class DiscordService {
         return eventDispatcher;
     }
 
+    public boolean isLogin() {
+        return login;
+    }
+
     public void init() throws DiscordException{
         System.out.println("Initializing DiscordService");
         ClientBuilder clientBuilder = new ClientBuilder();

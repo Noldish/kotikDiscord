@@ -8,8 +8,8 @@ import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MissingPermissionsException;
 import sx.blah.discord.util.RateLimitException;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Roman_Kuznetcov on 18.10.2016.
@@ -18,31 +18,63 @@ import java.util.regex.Pattern;
 public class CommandManager {
 
     private final String COMMAND_PATTERN = "^!.*";
+    private Map<String, String> commands = new HashMap<String, String>();
 
     @Autowired
     private DiscordService discordService;
+
+
+    public CommandManager(){
+        addCommand("!гуся", "░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
+                "▄███▀░◐░░░▌░░░░░░░ \n" +
+                "░░░░▌░░░░░▐░░░░░░░ \n" +
+                "░░░░▐░░░░░▐░░░░░░░ \n" +
+                "░░░░▌░░░░░▐▄▄░░░░░ \n" +
+                "░░░░▌░░░░▄▀▒▒▀▀▀▀▄ \n" +
+                "░░░▐░░░░▐▒▒▒▒▒▒▒▒▀▀▄ \n" +
+                "░░░▐░░░░▐▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
+                "░░░░▀▄░░░░▀▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
+                "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄ \n" +
+                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
+                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
+                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░");
+        addCommand("!найди пидораса", "Вермион пидорас");
+        addCommand("!пюрешка", "https://www.youtube.com/watch?v=A1Qb4zfurA8");
+    }
 
     public String handle() {
         return "Anus sebe derni, pes";
     }
 
     public void process(IMessage message){
-
         if (isCommand(message.getContent())){
-            try {
-                discordService.sendMessage("Sam svoi komandi vipolniay, pes",message.getChannel());
-            } catch (RateLimitException e) {
-                e.printStackTrace();
-            } catch (DiscordException e) {
-                e.printStackTrace();
-            } catch (MissingPermissionsException e) {
-                e.printStackTrace();
-            }
+            processCommmand(message);
         }
     }
 
     public boolean isCommand(String message){
         return message.matches(COMMAND_PATTERN);
+    }
+
+    public void processCommmand(IMessage message) {
+        try {
+            if (commands.containsKey(message.getContent())) {
+                discordService.sendMessage(commands.get(message.getContent()), message.getChannel());
+            } else {
+                discordService.sendMessage("Sam svoi komandi vipolniay, pes",message.getChannel());
+            }
+        } catch (RateLimitException | DiscordException | MissingPermissionsException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String addCommand(String message, String response){
+        if (!commands.containsKey(message)) {
+            commands.put(message, response);
+            return "Ok";
+        } else {
+            return "This command already exists";
+        }
     }
 
 }

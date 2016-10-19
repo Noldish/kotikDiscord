@@ -1,9 +1,6 @@
 package kotik.simple.service;
 
-import kotik.simple.service.commands.CommandInterface;
-import kotik.simple.service.commands.FindCommand;
-import kotik.simple.service.commands.HelpCommand;
-import kotik.simple.service.commands.TextCommand;
+import kotik.simple.service.commands.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sx.blah.discord.handle.obj.IMessage;
@@ -19,6 +16,7 @@ import java.util.Map;
 public class CommandManager {
 
     private final String COMMAND_PATTERN = "^!.*";
+    private final String ADD_COMMAND_PATTERN = "^!add.*";
     private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
 
     @Autowired
@@ -42,6 +40,7 @@ public class CommandManager {
         addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
         addCommand("!найди пидораса", new FindCommand());
         addCommand("!help", new HelpCommand());
+        addCommand("!add", new AddCommand());
     }
 
     public String handle() {
@@ -49,13 +48,19 @@ public class CommandManager {
     }
 
     public void process(IMessage message){
-        if (isCommand(message.getContent())){
+        if (isAddCommand(message.getContent())){
+            commands.get("!add").eval(message, this);
+        } else if (isCommand(message.getContent())){
             processCommmand(message);
         }
     }
 
     public boolean isCommand(String message){
         return message.matches(COMMAND_PATTERN);
+    }
+
+    public boolean isAddCommand(String message){
+        return message.matches(ADD_COMMAND_PATTERN);
     }
 
     public void processCommmand(IMessage message) {

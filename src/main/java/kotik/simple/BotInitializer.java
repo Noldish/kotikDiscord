@@ -21,9 +21,8 @@ public class BotInitializer {
     @Autowired
     private ChatListener chatListener;
 
-    BotInitializer(){
+    public BotInitializer(DiscordClient discord) {
         discord.dispather.registerListener(interfaceListener);
         discord.dispather.registerListener(chatListener);
     }
-
 }

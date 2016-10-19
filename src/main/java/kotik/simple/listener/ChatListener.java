@@ -3,12 +3,12 @@ package kotik.simple.listener;
 
 import kotik.simple.service.CommandManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IMessage;
 
-@Component
+@Service
 public class ChatListener implements IListener<MessageReceivedEvent> {
 
     @Autowired

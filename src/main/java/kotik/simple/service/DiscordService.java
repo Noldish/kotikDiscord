@@ -17,7 +17,8 @@ import sx.blah.discord.util.RateLimitException;
 @Service
 public class DiscordService {
 
-    private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc";
+    //private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc";
+    private final String TOKEN = "MjMxMDUxMzI1NjI5MTM2ODk2.CukZRg.vzaG9R6xPp2vLWJR4w-9RXbIzAw";
 
     private boolean login;
 
@@ -59,9 +60,13 @@ public class DiscordService {
         }
     }
 
-    public void sendMessage(String message, IChannel channel) throws RateLimitException, DiscordException, MissingPermissionsException {
-        messageBuilder.withContent(message);
-        messageBuilder.withChannel(channel);
-        messageBuilder.send();
+    public void sendMessage(String message, IChannel channel){
+        try {
+            messageBuilder.withContent(message);
+            messageBuilder.withChannel(channel);
+            messageBuilder.send();
+        } catch (RateLimitException | DiscordException | MissingPermissionsException e) {
+            e.printStackTrace();
+        }
     }
 }

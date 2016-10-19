@@ -1,12 +1,13 @@
 package kotik.simple.service;
 
+import kotik.simple.service.commands.CommandInterface;
+import kotik.simple.service.commands.FindCommand;
+import kotik.simple.service.commands.HelpCommand;
+import kotik.simple.service.commands.TextCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.util.DiscordException;
-import sx.blah.discord.util.MissingPermissionsException;
-import sx.blah.discord.util.RateLimitException;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +19,14 @@ import java.util.Map;
 public class CommandManager {
 
     private final String COMMAND_PATTERN = "^!.*";
-    private Map<String, String> commands = new HashMap<String, String>();
+    private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
 
     @Autowired
     private DiscordService discordService;
 
 
     public CommandManager(){
-        addCommand("!гуся", "░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
+        addCommand("!гуся", new TextCommand("░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
                 "▄███▀░◐░░░▌░░░░░░░ \n" +
                 "░░░░▌░░░░░▐░░░░░░░ \n" +
                 "░░░░▐░░░░░▐░░░░░░░ \n" +
@@ -37,9 +38,10 @@ public class CommandManager {
                 "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄ \n" +
                 "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
                 "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
-                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░");
-        addCommand("!найди пидораса", "Вермион пидорас");
-        addCommand("!пюрешка", "https://www.youtube.com/watch?v=A1Qb4zfurA8");
+                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░"));
+        addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
+        addCommand("!найди пидораса", new FindCommand());
+        addCommand("!help", new HelpCommand());
     }
 
     public String handle() {
@@ -57,21 +59,25 @@ public class CommandManager {
     }
 
     public void processCommmand(IMessage message) {
-        try {
-            if (commands.containsKey(message.getContent())) {
-                discordService.sendMessage(commands.get(message.getContent()), message.getChannel());
-            } else {
-                discordService.sendMessage("Sam svoi komandi vipolniay, pes",message.getChannel());
-            }
-        } catch (RateLimitException | DiscordException | MissingPermissionsException e){
-            e.printStackTrace();
+        if (commands.containsKey(message.getContent())){
+            commands.get(message.getContent()).eval(message, this);
+        } else {
+            discordService.sendMessage("Sam svoi komandi vipolniay, pes", message.getChannel());
         }
     }
 
     public String addCommand(String message, String response){
-        System.out.println("Adding command: message=" + message + "; response = " + response);
         if (!commands.containsKey(message)) {
-            commands.put(message, response);
+            commands.put(message, new TextCommand(response));
+            return "Ok";
+        } else {
+            return "This command already exists";
+        }
+    }
+
+    public String addCommand(String message, CommandInterface commandInterface){
+        if (!commands.containsKey(message)) {
+            commands.put(message, commandInterface);
             return "Ok";
         } else {
             return "This command already exists";
@@ -87,7 +93,11 @@ public class CommandManager {
         }
     }
 
-    public Map<String, String> getCommands() {
+    public Map<String, CommandInterface> getCommands() {
         return commands;
+    }
+
+    public DiscordService getDiscordService() {
+        return discordService;
     }
 }

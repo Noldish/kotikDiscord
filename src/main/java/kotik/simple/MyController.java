@@ -4,6 +4,7 @@ import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
 import kotik.simple.service.CommandManager;
 import kotik.simple.service.DiscordService;
+import kotik.simple.service.commands.CommandInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RateLimitException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -55,6 +57,10 @@ public class MyController {
 
     @RequestMapping("/getCommands")
     public Map<String, String> getCommands(){
-        return commandManager.getCommands();
+        Map<String, String> map = new HashMap<String, String>();
+        for (Map.Entry<String, CommandInterface> entry : commandManager.getCommands().entrySet()){
+            map.put(entry.getKey(), entry.getValue().toString());
+        }
+        return map;
     }
 }

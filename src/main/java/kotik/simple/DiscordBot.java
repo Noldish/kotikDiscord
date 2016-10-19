@@ -16,18 +16,20 @@
 
 package kotik.simple;
 
+import javafx.application.Application;
 import kotik.simple.service.DiscordClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-public class SampleSimpleApplication implements CommandLineRunner {
+public class DiscordBot extends SpringBootServletInitializer {
 
 	@Autowired
 	private DiscordClient discord;
@@ -39,14 +41,17 @@ public class SampleSimpleApplication implements CommandLineRunner {
 	private ChatListener chatListener;
 
 
-	@Override
-	public void run(String... args) {
-		discord.dispather.registerListener(interfaceListener);
-		discord.dispather.registerListener(chatListener);
+	public static void main(String[] args) throws Exception {
+		SpringApplication.run(DiscordBot.class, args);
 	}
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SampleSimpleApplication.class, args);
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		discord.dispather.registerListener(interfaceListener);
+		discord.dispather.registerListener(chatListener);
+		return application.sources(applicationClass);
 	}
+
+	private static Class<Application> applicationClass = Application.class;
 
 }

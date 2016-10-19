@@ -1,4 +1,4 @@
-package kotik.simple;
+package kotik.simple.listener;
 
 
 import kotik.simple.service.CommandManager;

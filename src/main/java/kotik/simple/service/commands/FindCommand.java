@@ -4,6 +4,7 @@ import kotik.simple.service.CommandManager;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Random;
@@ -11,9 +12,14 @@ import java.util.Random;
 /**
  * Created by Romique on 19.10.2016.
  */
-public class FindCommand implements CommandInterface{
+public class FindCommand implements CommandInterface,Serializable{
 
-    private Random randomGenerator;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5659806616589398046L;
+
+	private Random randomGenerator;
 
     private String description = "Ищет пидорасов в чате";
 

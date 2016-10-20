@@ -18,29 +18,16 @@ public class CommandManager {
     private final String COMMAND_PATTERN = "^!.*";
     private final String ADD_COMMAND_PATTERN = "^!add.*";
     private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
+    
+    private CommandRepository commandRepository;
 
     @Autowired
     private DiscordService discordService;
 
-
-    public CommandManager(){
-        addCommand("!гуся", new TextCommand("░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
-                "▄███▀░◐░░░▌░░░░░░░ \n" +
-                "░░░░▌░░░░░▐░░░░░░░ \n" +
-                "░░░░▐░░░░░▐░░░░░░░ \n" +
-                "░░░░▌░░░░░▐▄▄░░░░░ \n" +
-                "░░░░▌░░░░▄▀▒▒▀▀▀▀▄ \n" +
-                "░░░▐░░░░▐▒▒▒▒▒▒▒▒▀▀▄ \n" +
-                "░░░▐░░░░▐▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
-                "░░░░▀▄░░░░▀▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
-                "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄ \n" +
-                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
-                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
-                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░"));
-        addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
-        addCommand("!найди пидораса", new FindCommand());
-        addCommand("!help", new HelpCommand());
-        addCommand("!add", new AddCommand());
+    @Autowired
+    public CommandManager(CommandRepository commandRepository){
+    	this.commandRepository = commandRepository;
+        this.commands = commandRepository.getCommandsList();
     }
 
     public String handle() {
@@ -73,7 +60,7 @@ public class CommandManager {
 
     public String addCommand(String message, String response){
         if (!commands.containsKey(message)) {
-            commands.put(message, new TextCommand(response));
+        	commandRepository.addCommand(message, new TextCommand(response));
             return "Ok";
         } else {
             return "This command already exists";
@@ -99,7 +86,7 @@ public class CommandManager {
     }
 
     public Map<String, CommandInterface> getCommands() {
-        return commands;
+        return commandRepository.getCommandsList();
     }
 
     public DiscordService getDiscordService() {

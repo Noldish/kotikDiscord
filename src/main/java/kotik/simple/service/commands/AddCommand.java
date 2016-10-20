@@ -3,12 +3,18 @@ package kotik.simple.service.commands;
 import kotik.simple.service.CommandManager;
 import sx.blah.discord.handle.obj.IMessage;
 
+import java.io.Serializable;
+
 /**
  * Created by Romique on 19.10.2016.
  */
-public class AddCommand implements CommandInterface {
+public class AddCommand implements CommandInterface, Serializable {
 
-    private String description = "Команда для добавления текстовых команд";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 929114006085728772L;
+	private String description = "Команда для добавления текстовых команд";
     private String separator = ";";
 
     @Override

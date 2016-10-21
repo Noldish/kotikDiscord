@@ -31,7 +31,7 @@ public class CommandRepository {
 
 	public Map<String, CommandInterface> getCommandsList() {
 		List<Map<String, Object>> rows = this.jdbcTemplate
-				.queryForList("SELECT name,context FROM \"commands\"");
+				.queryForList("SELECT name,context FROM commands");
 		Map<String, CommandInterface> result = new HashMap<>();
 		for (Map m : rows) {
 			try {
@@ -47,7 +47,7 @@ public class CommandRepository {
 
 	public boolean addCommand(String key, CommandInterface context) {
 		try {
-			this.jdbcTemplate.update("insert into \"commands\" (name, context) values (?, ?)", key,
+			this.jdbcTemplate.update("insert into commands (name, context) values (?, ?)", key,
 					serialize(context));
 		} catch (DataAccessException | IOException e) {
 			return false;
@@ -57,7 +57,7 @@ public class CommandRepository {
 
 	public boolean deleteCommand(String key) {
 		try {
-			this.jdbcTemplate.update("delete from \"commands\" where name = ?", key);
+			this.jdbcTemplate.update("delete from commands where name = ?", key);
 		} catch (DataAccessException e) {
 			return false;
 		}

@@ -5,6 +5,10 @@ import kotik.simple.listener.InterfaceListener;
 import kotik.simple.service.CommandManager;
 import kotik.simple.service.DiscordService;
 import kotik.simple.service.commands.CommandInterface;
+import kotik.simple.service.commands.FindCommand;
+import kotik.simple.service.commands.HelpCommand;
+import kotik.simple.service.commands.TextCommand;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,5 +66,26 @@ public class MyController {
             map.put(entry.getKey(), entry.getValue().toString());
         }
         return map;
+    }
+    
+    @RequestMapping("/dbinit")
+    public String dbInit(){
+    	commandManager.addCommand("!гуся", new TextCommand("░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
+                "▄███▀░◐░░░▌░░░░░░░ \n" +
+                "░░░░▌░░░░░▐░░░░░░░ \n" +
+                "░░░░▐░░░░░▐░░░░░░░ \n" +
+                "░░░░▌░░░░░▐▄▄░░░░░ \n" +
+                "░░░░▌░░░░▄▀▒▒▀▀▀▀▄ \n" +
+                "░░░▐░░░░▐▒▒▒▒▒▒▒▒▀▀▄ \n" +
+                "░░░▐░░░░▐▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
+                "░░░░▀▄░░░░▀▄▒▒▒▒▒▒▒▒▒▒▀▄ \n" +
+                "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄ \n" +
+                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
+                "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
+                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░"));
+    	commandManager.addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
+    	commandManager.addCommand("!найди пидораса", new FindCommand());
+    	commandManager.addCommand("!help", new HelpCommand());
+        return "Successfully added base commands";
     }
 }

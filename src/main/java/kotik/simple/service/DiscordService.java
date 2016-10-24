@@ -1,14 +1,25 @@
 package kotik.simple.service;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import org.springframework.stereotype.Service;
+
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
+import sx.blah.discord.handle.audio.IAudioManager;
+import sx.blah.discord.handle.audio.IAudioProvider;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.MissingPermissionsException;
 import sx.blah.discord.util.RateLimitException;
+import sx.blah.discord.util.audio.providers.URLProvider;
 
 /**
  * Created by Romique on 19.10.2016.
@@ -19,7 +30,7 @@ public class DiscordService {
 
     //private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc"; //pur-pur-pur
     //private final String TOKEN = "MjMxMDUxMzI1NjI5MTM2ODk2.CukZRg.vzaG9R6xPp2vLWJR4w-9RXbIzAw"; //sobaDoba
-    private final String TOKEN = "MjM4NjA2NDM2OTc4OTE3Mzc2.CupYbA.WVGp4nOmfPhRvrE_qy3NaGj1l1g"; //testBotForTestIsTestBot
+    private final String TOKEN = "MjM4NjA2NDM2OTc4OTE3Mzc2.Cu-SCQ.WbXjKI9qulcGRMQUmaXOf_oHj0c"; //testBotForTestIsTestBot
 
     private boolean login;
 
@@ -70,4 +81,23 @@ public class DiscordService {
             e.printStackTrace();
         }
     }
+
+    public void playSoundToChannelFromURL(IGuild guild,String url){
+
+        IAudioManager manager = guild.getAudioManager();
+        try {
+            IAudioProvider provider = new URLProvider(url);
+            manager.setAudioProvider(provider);
+            manager.getAudioProcessor().provide();
+            List<IVoiceChannel> channels = guild.getVoiceChannels();
+            channels.get(0).join();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (MissingPermissionsException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

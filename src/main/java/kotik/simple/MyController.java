@@ -4,10 +4,7 @@ import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
 import kotik.simple.service.CommandManager;
 import kotik.simple.service.DiscordService;
-import kotik.simple.service.commands.CommandInterface;
-import kotik.simple.service.commands.FindCommand;
-import kotik.simple.service.commands.HelpCommand;
-import kotik.simple.service.commands.TextCommand;
+import kotik.simple.service.commands.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +83,7 @@ public class MyController {
     	commandManager.addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
     	commandManager.addCommand("!найди пидораса", new FindCommand());
     	commandManager.addCommand("!help", new HelpCommand());
+        commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"));
         return "Successfully added base commands";
     }
 }

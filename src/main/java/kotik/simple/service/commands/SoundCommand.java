@@ -5,27 +5,24 @@ import sx.blah.discord.handle.obj.IMessage;
 
 import java.io.Serializable;
 
-/**
- * Created by Romique on 19.10.2016.
- */
-public class TextCommand implements CommandInterface,Serializable {
-    /**
+public class SoundCommand implements CommandInterface, Serializable {
+
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7132931201182285689L;
-	private String text;
+	private static final long serialVersionUID = 6087128975166540488L;
+	private String url;
 
-    public TextCommand(String text){
-        this.text = text;
-    }
+	public SoundCommand(String url) {
+		this.url = url;
+	}
 
-    @Override
-    public void eval(IMessage message, CommandManager commandManager){
-        commandManager.getDiscordService().sendMessage(text, message.getChannel());
-    }
+	public SoundCommand() {
+	}
 
-    @Override
-    public String toString(){
-        return text;
-    }
+	@Override
+	public void eval(IMessage message, CommandManager commandManager) {
+		commandManager.getDiscordService().playSoundToChannelFromURL(message.getGuild(), url);
+	}
+
 }

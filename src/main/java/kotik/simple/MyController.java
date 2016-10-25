@@ -84,6 +84,7 @@ public class MyController {
     	commandManager.addCommand("!найди пидораса", new FindCommand());
     	commandManager.addCommand("!help", new HelpCommand());
         commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"));
+        commandManager.addCommand("!stopdj", new SoundCommand());
         return "Successfully added base commands";
     }
 }

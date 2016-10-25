@@ -12,6 +12,7 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.handle.audio.IAudioManager;
 import sx.blah.discord.handle.audio.IAudioProvider;
+import sx.blah.discord.handle.audio.impl.DefaultProvider;
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
@@ -95,6 +96,16 @@ public class DiscordService {
             e.printStackTrace();
         } catch (MissingPermissionsException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void stopSound(IMessage message) {
+        IGuild guild = message.getGuild();
+        IAudioManager manager = guild.getAudioManager();
+        manager.setAudioProvider(new DefaultProvider());
+        List<IVoiceChannel> channels = guild.getVoiceChannels();
+        for (IVoiceChannel channel:channels){
+            channel.leave();
         }
     }
 

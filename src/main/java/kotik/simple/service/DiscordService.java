@@ -89,7 +89,9 @@ public class DiscordService {
             IAudioProvider provider = new URLProvider(url);
             manager.setAudioProvider(provider);
             manager.getAudioProcessor().provide();
-            channels.get(0).join();
+            if (!channels.get(0).getName().equals("Адмирал")){
+                channels.get(0).join();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {

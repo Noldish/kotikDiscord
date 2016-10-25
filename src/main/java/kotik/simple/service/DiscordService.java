@@ -3,8 +3,12 @@ package kotik.simple.service;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import kotik.simple.listener.ChatListener;
+import kotik.simple.listener.InterfaceListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sx.blah.discord.api.ClientBuilder;
@@ -32,42 +36,58 @@ public class DiscordService {
     private final String TOKEN = "MjM4NjA2NDM2OTc4OTE3Mzc2.Cu-SCQ.WbXjKI9qulcGRMQUmaXOf_oHj0c"; //testBotForTestIsTestBot
 
     private boolean login;
+    private boolean initialized;
 
     private IDiscordClient iDiscordClient;
     private MessageBuilder messageBuilder;
     private EventDispatcher eventDispatcher;
+    private IVoiceChannel voiceChannel;
 
-    public IDiscordClient getiDiscordClient() {
-        return iDiscordClient;
-    }
+    @Autowired
+    private InterfaceListener interfaceListener;
+
+    @Autowired
+    private ChatListener chatListener;
 
     public EventDispatcher getEventDispatcher() {
         return eventDispatcher;
     }
 
-    public boolean isLogin() {
-        return login;
+    public DiscordService() {
+
     }
 
+    @PostConstruct
     public void init() throws DiscordException{
-        System.out.println("Initializing DiscordService");
-        ClientBuilder clientBuilder = new ClientBuilder();
-        clientBuilder.withToken(TOKEN);
-        if (login) {
-            iDiscordClient = clientBuilder.login();
+        if (!initialized) {
+            System.out.println("Initializing DiscordService");
+            ClientBuilder clientBuilder = new ClientBuilder();
+            clientBuilder.withToken(TOKEN);
+            if (login) {
+                iDiscordClient = clientBuilder.login();
+            } else {
+                iDiscordClient = clientBuilder.build();
+                iDiscordClient.login();
+                login = true;
+            }
+            messageBuilder = new MessageBuilder(iDiscordClient);
+            eventDispatcher = iDiscordClient.getDispatcher();
+            eventDispatcher.registerListener(interfaceListener);
+            eventDispatcher.registerListener(chatListener);
+            initialized = true;
         } else {
-            iDiscordClient = clientBuilder.build();
-            iDiscordClient.login();
-            login = true;
+            System.out.println("DiscordService already initialized");
         }
-        messageBuilder = new MessageBuilder(iDiscordClient);
-        eventDispatcher = iDiscordClient.getDispatcher();
     }
 
     public void shutdown() throws DiscordException, RateLimitException{
-        System.out.println("Stopping DiscordService");
-        if (login) {
-            iDiscordClient.logout();
+        if (initialized) {
+            System.out.println("Stopping DiscordService");
+            if (login) {
+                iDiscordClient.logout();
+            }
+        } else {
+            System.out.println("DiscordService is not initialized");
         }
     }
 
@@ -89,7 +109,8 @@ public class DiscordService {
             IAudioProvider provider = new URLProvider(url);
             manager.setAudioProvider(provider);
             manager.getAudioProcessor().provide();
-            channels.get(0).join();
+            voiceChannel = channels.get(0);
+            voiceChannel.join();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {
@@ -103,10 +124,12 @@ public class DiscordService {
         IGuild guild = message.getGuild();
         IAudioManager manager = guild.getAudioManager();
         manager.setAudioProvider(new DefaultProvider());
-        List<IVoiceChannel> channels = guild.getVoiceChannels();
+        voiceChannel.leave();
+        /*List<IVoiceChannel> channels = guild.getVoiceChannels();
         for (IVoiceChannel channel:channels){
             channel.leave();
         }
+        */
     }
 
 }

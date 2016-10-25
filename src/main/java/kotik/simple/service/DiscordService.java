@@ -109,8 +109,8 @@ public class DiscordService {
             IAudioProvider provider = new URLProvider(url);
             manager.setAudioProvider(provider);
             manager.getAudioProcessor().provide();
-            voiceChannel = channels.get(0)
-			if (!voiceChannel.getName().equals("¿‰ÏË‡Î")){
+            voiceChannel = channels.get(0);
+			if (!voiceChannel.getName().equals("–ê–¥–º–∏—Ä–∞–ª")){
                 voiceChannel.join();
             }
         } catch (IOException e) {

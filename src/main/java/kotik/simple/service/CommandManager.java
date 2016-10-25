@@ -25,6 +25,8 @@ public class CommandManager {
 	@Autowired
 	private DiscordService discordService;
 
+    @Autowired LiarService liarService;
+
 	@Autowired
 	public CommandManager(CommandRepository commandRepository) {
 		this.commandRepository = commandRepository;
@@ -36,6 +38,7 @@ public class CommandManager {
 	}
 
 	public void process(IMessage message) {
+        liarService.process(message);
 		if (isAddCommand(message.getContent())) {
 			commands.get("!add").eval(message, this);
 		} else if (isCommand(message.getContent())) {

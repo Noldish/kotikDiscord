@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RateLimitException;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +75,7 @@ public class MyController {
         commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"));
         commandManager.addCommand("!stopdj", new SoundCommand());
         commandManager.addCommand("!add", new AddCommand());
+        commandManager.addCommand("!badumts", new SoundCommand("/","joke_drum_effect.mp3"));
         return "Successfully added base commands";
     }
 }

@@ -1,5 +1,6 @@
 package kotik.simple.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,6 +10,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import sx.blah.discord.api.ClientBuilder;
@@ -22,6 +26,7 @@ import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.MissingPermissionsException;
 import sx.blah.discord.util.RateLimitException;
+import sx.blah.discord.util.audio.providers.FileProvider;
 import sx.blah.discord.util.audio.providers.URLProvider;
 
 /**
@@ -108,7 +113,28 @@ public class DiscordService {
         try {
             IAudioProvider provider = new URLProvider(url);
             manager.setAudioProvider(provider);
-            manager.getAudioProcessor().provide();
+            voiceChannel = channels.get(0);
+			if (!voiceChannel.getName().equals("Адмирал")){
+                voiceChannel.join();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (MissingPermissionsException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void playSoundToChannelFromFile(IMessage message, String path, String name) {
+    	
+    	Resource res = new ClassPathResource(path+name);
+        IGuild guild = message.getGuild();
+        List<IVoiceChannel> channels = message.getAuthor().getConnectedVoiceChannels();
+        IAudioManager manager = guild.getAudioManager();
+        try {
+            IAudioProvider provider = new FileProvider(res.getFile());
+            manager.setAudioProvider(provider);
             voiceChannel = channels.get(0);
 			if (!voiceChannel.getName().equals("Адмирал")){
                 voiceChannel.join();

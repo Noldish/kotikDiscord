@@ -28,8 +28,9 @@ public class SoundCommand implements CommandInterface, Serializable {
 
 		if (message.getContent().equals(STOP_COMMAND)){
 			commandManager.getDiscordService().stopSound(message);
-		}
-		commandManager.getDiscordService().playSoundToChannelFromURL(message, url);
+		} else {
+            commandManager.getDiscordService().playSoundToChannelFromURL(message, url);
+        }
 	}
 
 }

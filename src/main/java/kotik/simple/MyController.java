@@ -25,20 +25,7 @@ public class MyController {
     DiscordService discordService;
 
     @Autowired
-    private InterfaceListener interfaceListener;
-
-    @Autowired
-    private ChatListener chatListener;
-
-    @Autowired
     CommandManager commandManager;
-
-    @RequestMapping("/start")
-    public void start() throws DiscordException{
-        discordService.init();
-        discordService.getEventDispatcher().registerListener(interfaceListener);
-        discordService.getEventDispatcher().registerListener(chatListener);
-    }
 
     @RequestMapping("/stop")
     public void stop() throws DiscordException, RateLimitException{
@@ -84,7 +71,9 @@ public class MyController {
     	commandManager.addCommand("!найди пидораса", new FindCommand());
     	commandManager.addCommand("!help", new HelpCommand());
         commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"));
+        commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"));
         commandManager.addCommand("!stopdj", new SoundCommand());
+        commandManager.addCommand("!add", new AddCommand());
         return "Successfully added base commands";
     }
 }

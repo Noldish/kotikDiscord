@@ -12,9 +12,7 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.handle.audio.IAudioManager;
 import sx.blah.discord.handle.audio.IAudioProvider;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.IVoiceChannel;
+import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
 import sx.blah.discord.util.MissingPermissionsException;
@@ -82,14 +80,14 @@ public class DiscordService {
         }
     }
 
-    public void playSoundToChannelFromURL(IGuild guild,String url){
-
+    public void playSoundToChannelFromURL(IMessage message, String url) {
+        IGuild guild = message.getGuild();
+        List<IVoiceChannel> channels = message.getAuthor().getConnectedVoiceChannels();
         IAudioManager manager = guild.getAudioManager();
         try {
             IAudioProvider provider = new URLProvider(url);
             manager.setAudioProvider(provider);
             manager.getAudioProcessor().provide();
-            List<IVoiceChannel> channels = guild.getVoiceChannels();
             channels.get(0).join();
         } catch (IOException e) {
             e.printStackTrace();

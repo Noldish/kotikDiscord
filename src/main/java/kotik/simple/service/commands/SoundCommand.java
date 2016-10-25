@@ -22,7 +22,7 @@ public class SoundCommand implements CommandInterface, Serializable {
 
 	@Override
 	public void eval(IMessage message, CommandManager commandManager) {
-		commandManager.getDiscordService().playSoundToChannelFromURL(message.getGuild(), url);
+		commandManager.getDiscordService().playSoundToChannelFromURL(message, url);
 	}
 
 }

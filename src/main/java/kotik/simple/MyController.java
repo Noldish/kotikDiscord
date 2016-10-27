@@ -55,7 +55,8 @@ public class MyController {
     
     @RequestMapping("/dbinit")
     public String dbInit(){
-    	commandManager.addCommand("!гуся", new TextCommand("░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
+    	StringBuilder result = new StringBuilder();
+    	result.append(commandManager.addCommand("!гуся", new TextCommand("░ГУСЯ░▄▀▀▀▄░РАБОТЯГИ░░ \n" +
                 "▄███▀░◐░░░▌░░░░░░░ \n" +
                 "░░░░▌░░░░░▐░░░░░░░ \n" +
                 "░░░░▐░░░░░▐░░░░░░░ \n" +
@@ -67,15 +68,17 @@ public class MyController {
                 "░░░░░░▀▄▄▄▄▄█▄▄▄▄▄▄▄▄▄▄▄▀▄ \n" +
                 "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
                 "░░░░░░░░░░░▌▌░▌▌░░░░░ \n" +
-                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░"));
-    	commandManager.addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"));
-    	commandManager.addCommand("!найди пидораса", new FindCommand());
-    	commandManager.addCommand("!help", new HelpCommand());
-        commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"));
-        commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"));
-        commandManager.addCommand("!stopdj", new SoundCommand());
-        commandManager.addCommand("!add", new AddCommand());
-        commandManager.addCommand("!badumts", new SoundCommand("/","joke_drum_effect.mp3"));
-        return "Successfully added base commands";
+                "░░░░░░░░░▄▄▌▌▄▌▌░░░░░"))
+    			+"\n");
+    	result.append(commandManager.addCommand("!пюрешка", new TextCommand("https://www.youtube.com/watch?v=A1Qb4zfurA8"))+"\n");
+    	result.append(commandManager.addCommand("!найди пидораса", new FindCommand())+"\n");
+    	result.append(commandManager.addCommand("!help", new HelpCommand())+"\n");
+    	result.append(commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"))+"\n");
+    	result.append(commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"))+"\n");
+    	result.append(commandManager.addCommand("!stopdj", new SoundCommand())+"\n");
+    	result.append(commandManager.addCommand("!add", new AddCommand())+"\n");
+    	result.append(commandManager.addCommand("!badumts", new SoundCommand("/","joke_drum_effect.mp3"))+"\n");
+    	result.append(commandManager.addCommand("!delete", new DeleteCommand())+"\n");
+        return result.toString();
     }
 }

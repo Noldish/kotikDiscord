@@ -55,11 +55,20 @@ public class CommandManager {
 	}
 
 	public void processCommmand(IMessage message) {
-		if (commands.containsKey(message.getContent())) {
-			commands.get(message.getContent()).eval(message, this);
+		String commandKey = getCommandKey(message);
+		if (commands.containsKey(commandKey)) {
+			commands.get(commandKey).eval(message, this);
 		} else {
 			discordService.sendMessage("Sam svoi komandi vipolniay, pes", message.getChannel());
 		}
+	}
+	
+	private String getCommandKey(IMessage message){
+		String result = message.getContent();
+		if (result.indexOf(' ')!=-1){
+			result = result.substring(0, result.indexOf(' '));
+		}
+		return result;
 	}
 
 	public String addCommand(String message, String response) {
@@ -91,6 +100,7 @@ public class CommandManager {
 	public String deleteCommand(String message) {
 		if (commands.containsKey(message)) {
 			commandRepository.deleteCommand(message);
+			this.commands = commandRepository.getCommandsList();
 			return "Ok";
 		} else {
 			return "This command doesn't exist";

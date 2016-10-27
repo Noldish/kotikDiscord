@@ -48,8 +48,11 @@ public class CommandRepository {
 
 	public boolean addCommand(String key, CommandInterface context) {
 		try {
-			this.jdbcTemplate.update("insert into commands (name, context) values (?, ?)", key,
-					serialize(context));
+			if(isCommandExists(key)){
+				this.jdbcTemplate.update("update commands set context = ? where name = ?", serialize(context), key);
+			} else {
+				this.jdbcTemplate.update("insert into commands (name, context) values (?, ?)", key, serialize(context));
+			}
 		} catch (DataAccessException | IOException e) {
 			return false;
 		}
@@ -80,5 +83,14 @@ public class CommandRepository {
 				return o.readObject();
 			}
 		}
+	}
+	
+	private boolean isCommandExists(String key){
+		try{
+			this.jdbcTemplate.queryForObject("select context from commands where name=?",CommandInterface.class,key);
+		} catch (DataAccessException e) {
+			return false;
+		}
+		return true;	
 	}
 }

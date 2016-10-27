@@ -1,6 +1,5 @@
 package kotik.simple.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
@@ -48,9 +47,7 @@ import sx.blah.discord.util.audio.providers.URLProvider;
 @Service
 public class DiscordService {
 
-    private final String TOKEN = "MjM3ODU5MTc0NjIzNjA4ODMz.CueNkA.wUDpk2u6Z6-EQ_bAgljByNuVfpc"; //pur-pur-pur
-    //private final String TOKEN = "MjMxMDUxMzI1NjI5MTM2ODk2.CukZRg.vzaG9R6xPp2vLWJR4w-9RXbIzAw"; //sobaDoba
-    //private final String TOKEN = "MjM4NjA2NDM2OTc4OTE3Mzc2.Cu-SCQ.WbXjKI9qulcGRMQUmaXOf_oHj0c"; //testBotForTestIsTestBot
+    private String TOKEN;
 
     private boolean login;
     private boolean initialized;
@@ -59,6 +56,9 @@ public class DiscordService {
     private MessageBuilder messageBuilder;
     private EventDispatcher eventDispatcher;
     private IVoiceChannel voiceChannel;
+    
+    @javax.annotation.Resource
+    private Environment env;
 
     @Autowired
     private InterfaceListener interfaceListener;
@@ -71,7 +71,6 @@ public class DiscordService {
     }
 
     public DiscordService() {
-
     }
 
     @PostConstruct
@@ -79,6 +78,7 @@ public class DiscordService {
         if (!initialized) {
         System.out.println("Initializing DiscordService");
         ClientBuilder clientBuilder = new ClientBuilder();
+    	this.TOKEN = env.getRequiredProperty("token");
         clientBuilder.withToken(TOKEN);
         if (login) {
             iDiscordClient = clientBuilder.login();

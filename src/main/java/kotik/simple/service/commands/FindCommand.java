@@ -19,14 +19,12 @@ public class FindCommand implements CommandInterface,Serializable{
 
 	private Random randomGenerator;
 
-    private String EllId = "219739436789923850";
-
-    private Double specialLuck = 0.4;
-
     private String description = "Ищет пидорасов в чате";
 
     @Override
     public void eval(IMessage message, CommandManager commandManager) {
+        String EllId = "219739436789923850";
+        Double specialLuck = 0.4;
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         Double luck = randomGenerator.nextDouble();

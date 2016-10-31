@@ -38,7 +38,7 @@ public class FindCommand implements CommandInterface,Serializable{
                 commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
             } else {
                 System.out.println("Пацан сам тот ещё петух оказался: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
-                commandManager.getDiscordService().sendMessage("В зеркало посмотри :pituh:!", message.getChannel());
+                commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
             }
       //  } catch (UnsupportedEncodingException e){
         //    e.printStackTrace();

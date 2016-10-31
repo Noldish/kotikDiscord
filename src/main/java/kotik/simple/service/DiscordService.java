@@ -97,6 +97,7 @@ public class DiscordService {
     }
     }
 
+
     public void shutdown() throws DiscordException, RateLimitException{
         if (initialized) {
         System.out.println("Stopping DiscordService");

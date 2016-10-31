@@ -23,6 +23,7 @@ public class FindCommand implements CommandInterface,Serializable{
 
     @Override
     public void eval(IMessage message, CommandManager commandManager){
+        System.out.println(message.getAuthor().getName() + " запросил найти пидораса.");
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         //try {

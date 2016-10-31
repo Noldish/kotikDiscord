@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.JsonSyntaxException;
@@ -97,12 +98,14 @@ public class DiscordService {
     }
     }
 
-
+    @PreDestroy
     public void shutdown() throws DiscordException, RateLimitException{
         if (initialized) {
         System.out.println("Stopping DiscordService");
         if (login) {
             iDiscordClient.logout();
+            initialized = false;
+            login = false;
         }
         } else {
             System.out.println("DiscordService is not initialized");

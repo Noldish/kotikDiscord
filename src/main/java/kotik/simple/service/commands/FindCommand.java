@@ -35,7 +35,7 @@ public class FindCommand implements CommandInterface,Serializable{
             luck = luck - specialLuck;
             System.out.println("ОГО! Да это же вермион. Насыпем ему удачи ещё: " + luck.toString());
         }
-        if (luck > 0.2) {
+        if ((luck > 0.2) && (message.getAuthor().getName() != iUser.getName())) {
             System.out.println("Найден пидорас: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
             commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
         } else {

@@ -26,10 +26,10 @@ public class FindCommand implements CommandInterface,Serializable{
     @Override
     public void eval(IMessage message, CommandManager commandManager){
         randomGenerator = new Random();
-        String utf8name;
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         try {
-            commandManager.getDiscordService().sendMessage(new String(iUser.getName().getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
+            System.out.println("Поиск пидораса - " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
+            commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
         } catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }

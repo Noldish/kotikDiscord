@@ -5,8 +5,6 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 /**
@@ -27,22 +25,24 @@ public class FindCommand implements CommandInterface,Serializable{
     public void eval(IMessage message, CommandManager commandManager){
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
-        try {
+        //try {
             Double luck = randomGenerator.nextDouble();
             if (message.getAuthor().getName().equals("Ellq")){
                 luck = luck - 0.5;
             }
             System.out.println("Поиск пидораса");
             if (luck > 0.2) {
-                System.out.println("Найден пидорас: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
-                commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
+                //System.out.println("Найден пидорас: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
+                //commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
+                System.out.println("Найден пидорас: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
+                commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
             } else {
-                System.out.println("Пацан сам тот ещё петух оказался: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
-                commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
+                System.out.println("Пацан сам тот ещё петух оказался: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
+                commandManager.getDiscordService().sendMessage("В зеркало посмотри :pituh:!", message.getChannel());
             }
-        } catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }
+      //  } catch (UnsupportedEncodingException e){
+        //    e.printStackTrace();
+        //}
     }
 
     @Override

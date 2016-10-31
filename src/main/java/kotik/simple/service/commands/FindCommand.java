@@ -26,7 +26,7 @@ public class FindCommand implements CommandInterface,Serializable{
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         Double luck = randomGenerator.nextDouble();
-        System.out.println(message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
+        System.out.println(message.getAuthor().getID() + " с ником " + message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
         if (message.getAuthor().getName().equals("Ellq")) {
             luck = luck - 0.5;
             System.out.println("ОГО! Да это же вермион. Насыпем ему удачи ещё: " + luck.toString());

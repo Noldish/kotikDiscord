@@ -23,7 +23,6 @@ public class FindCommand implements CommandInterface,Serializable{
 
     @Override
     public void eval(IMessage message, CommandManager commandManager){
-        System.out.println(message.getAuthor().getName() + " запросил найти пидораса.");
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         //try {
@@ -31,7 +30,7 @@ public class FindCommand implements CommandInterface,Serializable{
             if (message.getAuthor().getName().equals("Ellq")){
                 luck = luck - 0.5;
             }
-            System.out.println("Поиск пидораса");
+            System.out.println(message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
             if (luck > 0.2) {
                 //System.out.println("Найден пидорас: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
                 //commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());

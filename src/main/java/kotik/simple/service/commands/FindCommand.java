@@ -22,27 +22,22 @@ public class FindCommand implements CommandInterface,Serializable{
     private String description = "Ищет пидорасов в чате";
 
     @Override
-    public void eval(IMessage message, CommandManager commandManager){
+    public void eval(IMessage message, CommandManager commandManager) {
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
-        //try {
-            Double luck = randomGenerator.nextDouble();
-            if (message.getAuthor().getName().equals("Ellq")){
-                luck = luck - 0.5;
-            }
-            System.out.println(message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
-            if (luck > 0.2) {
-                //System.out.println("Найден пидорас: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
-                //commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
-                System.out.println("Найден пидорас: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
-                commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
-            } else {
-                System.out.println("Пацан сам тот ещё петух оказался: " + message.getAuthor().getDisplayName(message.getGuild()) + " - пидорас!");
-                commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
-            }
-      //  } catch (UnsupportedEncodingException e){
-        //    e.printStackTrace();
-        //}
+        Double luck = randomGenerator.nextDouble();
+        System.out.println(message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
+        if (message.getAuthor().getName().equals("Ellq")) {
+            luck = luck - 0.5;
+            System.out.println("ОГО! Да это же вермион. Насыпем ему удачи ещё: " + luck.toString());
+        }
+        if (luck > 0.2) {
+            System.out.println("Найден пидорас: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
+            commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
+        } else {
+            System.out.println("Пацан сам тот ещё петух оказался: " + message.getAuthor().getDisplayName(message.getGuild()) + " - пидорас!");
+            commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
+        }
     }
 
     @Override

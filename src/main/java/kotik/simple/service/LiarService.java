@@ -54,21 +54,25 @@ public class LiarService {
 
 
     public boolean isTriggered(IMessage message) {
-        Double weight = 0.0;
-        Double score = 0.0;
-        Integer wordsCount = countWords(message.getContent());
-        for (Map.Entry<String,Double> e : trustedGuys.entrySet()){
-            if (message.getAuthor().getName().equals(e.getKey())){
-                score = score + e.getValue();
+        if ((message.getContent().toLowerCase().contains("я "))||(message.getContent().toLowerCase().contains(" я "))) {
+            Double weight = 0.0;
+            Double score = 0.0;
+            Integer wordsCount = countWords(message.getContent());
+            for (Map.Entry<String, Double> e : trustedGuys.entrySet()) {
+                if (message.getAuthor().getName().equals(e.getKey())) {
+                    score = score + e.getValue();
+                }
             }
-        }
-        for (Map.Entry<String, Double> e : weights.entrySet()) {
-            if (message.getContent().toLowerCase().contains(e.getKey().toLowerCase())) {
-                score = score + e.getValue();
+            for (Map.Entry<String, Double> e : weights.entrySet()) {
+                if (message.getContent().toLowerCase().contains(e.getKey().toLowerCase())) {
+                    score = score + e.getValue();
+                }
             }
+            weight = 1.0 * (score / wordsCount);
+            return weight >= threshold;
+        } else {
+            return false;
         }
-        weight = 1.0 * (score / wordsCount);
-        return weight >= threshold;
     }
 
     @PostConstruct

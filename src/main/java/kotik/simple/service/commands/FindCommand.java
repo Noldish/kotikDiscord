@@ -19,6 +19,8 @@ public class FindCommand implements CommandInterface,Serializable{
 
 	private Random randomGenerator;
 
+    private String EllId = "219739436789923850";
+
     private String description = "Ищет пидорасов в чате";
 
     @Override
@@ -27,7 +29,7 @@ public class FindCommand implements CommandInterface,Serializable{
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         Double luck = randomGenerator.nextDouble();
         System.out.println(message.getAuthor().getID() + " с ником " + message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
-        if (message.getAuthor().getName().equals("Ellq")) {
+        if (message.getAuthor().getID().equals(EllId)) {
             luck = luck - 0.5;
             System.out.println("ОГО! Да это же вермион. Насыпем ему удачи ещё: " + luck.toString());
         }

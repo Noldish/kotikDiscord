@@ -21,6 +21,8 @@ public class FindCommand implements CommandInterface,Serializable{
 
     private String EllId = "219739436789923850";
 
+    private Double specialLuck = 0.4;
+
     private String description = "Ищет пидорасов в чате";
 
     @Override
@@ -30,7 +32,7 @@ public class FindCommand implements CommandInterface,Serializable{
         Double luck = randomGenerator.nextDouble();
         System.out.println(message.getAuthor().getID() + " с ником " + message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
         if (message.getAuthor().getID().equals(EllId)) {
-            luck = luck - 0.5;
+            luck = luck - specialLuck;
             System.out.println("ОГО! Да это же вермион. Насыпем ему удачи ещё: " + luck.toString());
         }
         if (luck > 0.2) {

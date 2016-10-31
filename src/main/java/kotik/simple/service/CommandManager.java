@@ -55,9 +55,11 @@ public class CommandManager {
 	}
 
 	public void processCommmand(IMessage message) {
-		String commandKey = getCommandKey(message);
-		if (commands.containsKey(commandKey)) {
-			commands.get(commandKey).eval(message, this);
+		//String commandKey = getCommandKey(message);
+		//if (commands.containsKey(commandKey)) {
+		//	commands.get(commandKey).eval(message, this);
+        if (commands.containsKey(message.getContent())){
+            commands.get(message.getContent()).eval(message, this);
 		} else {
 			discordService.sendMessage("Sam svoi komandi vipolniay, pes", message.getChannel());
 		}

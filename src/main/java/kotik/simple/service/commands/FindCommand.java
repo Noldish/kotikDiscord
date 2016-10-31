@@ -28,8 +28,18 @@ public class FindCommand implements CommandInterface,Serializable{
         randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         try {
-            System.out.println("Поиск пидораса - " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
-            commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
+            Double luck = randomGenerator.nextDouble();
+            if (message.getAuthor().getName().equals("Ellq")){
+                luck = luck - 0.5;
+            }
+            System.out.println("Поиск пидораса");
+            if (luck > 0.2) {
+                System.out.println("Найден пидорас: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
+                commandManager.getDiscordService().sendMessage(new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!", message.getChannel());
+            } else {
+                System.out.println("Пацан сам тот ещё петух оказался: " + new String(iUser.getDisplayName(message.getGuild()).getBytes("Cp1251"), "UTF-8") + " - пидорас!");
+                commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
+            }
         } catch (UnsupportedEncodingException e){
             e.printStackTrace();
         }

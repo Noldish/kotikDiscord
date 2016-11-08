@@ -112,7 +112,7 @@ public class CommandManager {
 
     public DBData generateDBData(CommandInterface command){
         DBData dbData = new DBData();
-        dbData.setTable("testcommands");
+        dbData.setTable(TABLE);
         dbData.add("class", command.getClass().getName());
         dbData.add("name", command.getName());
         dbData.add("description", command.getDescription());

@@ -1,28 +1,30 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.service.CommandManager;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
-import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
  * Created by Romique on 19.10.2016.
  */
-public class FindCommand implements CommandInterface,Serializable{
+public class FindCommand extends AbstractCommand{
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5659806616589398046L;
+    private final static String NAME = "!найди пидораса";
+    private final static String DESC = "Ищет пидорасов в чате";
 
-	private Random randomGenerator;
+    public FindCommand(){
+        super(NAME, DESC);
+    }
 
-    private String description = "Ищет пидорасов в чате";
+    public FindCommand(HashMap params){
+        super(params.get("name").toString(), params.get("description").toString());
+    }
 
     @Override
-    public void eval(IMessage message, CommandManager commandManager) {
+    public void eval(IMessage message) {
+        Random randomGenerator;
         String EllId = "219739436789923850";
         Double specialLuck = 0.4;
         randomGenerator = new Random();
@@ -35,16 +37,11 @@ public class FindCommand implements CommandInterface,Serializable{
         }
         if ((luck > 0.2) && (message.getAuthor().getName() != iUser.getName())) {
             System.out.println("Найден пидорас: " + iUser.getDisplayName(message.getGuild()) + " - пидорас!");
-            commandManager.getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
+            getCommandManager().getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пидорас!", message.getChannel());
         } else {
             System.out.println("Пацан сам тот ещё петух оказался: " + message.getAuthor().getDisplayName(message.getGuild()) + " - пидорас!");
-            commandManager.getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
+            getCommandManager().getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
         }
-    }
-
-    @Override
-    public String toString(){
-        return description;
     }
 
 }

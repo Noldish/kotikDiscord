@@ -54,6 +54,7 @@ public class CommandRepository {
 				this.jdbcTemplate.update("insert into commands (name, context) values (?, ?)", key, serialize(context));
 			}
 		} catch (DataAccessException | IOException e) {
+            e.printStackTrace();
 			return false;
 		}
 		return true;

@@ -1,16 +1,22 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.service.CommandManager;
 import sx.blah.discord.handle.obj.IMessage;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Romique on 19.10.2016.
  */
 public interface CommandInterface {
 
-    public void eval(IMessage message, CommandManager commandManager);
+    public void eval(IMessage message);
 
-    public String toString();
+    public String getName();
+
+    public String getDescription();
+
+    public List<String> getPermitted_userlist();
+
+    public CommandInterface addPermission(String id);
+
 }

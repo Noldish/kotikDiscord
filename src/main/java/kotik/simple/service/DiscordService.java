@@ -9,8 +9,11 @@ import javax.annotation.PreDestroy;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.JsonSyntaxException;
+import kotik.simple.db.DBUtils;
 import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
+import kotik.simple.objects.User;
+import kotik.simple.service.commands.CommandFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -48,6 +51,7 @@ import sx.blah.discord.util.audio.providers.URLProvider;
 @Service
 public class DiscordService {
 
+    private String mainchannel = "235804189240852480"; //raidchyatik
     private String TOKEN;
 
     private boolean login;
@@ -67,6 +71,15 @@ public class DiscordService {
     @Autowired
     private ChatListener chatListener;
 
+    @Autowired
+    private DBUtils dbUtils;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    CommandFactory commandFactory;
+
     public EventDispatcher getEventDispatcher() {
         return eventDispatcher;
     }
@@ -75,27 +88,27 @@ public class DiscordService {
     }
 
     @PostConstruct
-    public void init() throws DiscordException{
+    public void init() throws DiscordException {
         if (!initialized) {
-        System.out.println("Initializing DiscordService");
-        ClientBuilder clientBuilder = new ClientBuilder();
-    	this.TOKEN = env.getRequiredProperty("token");
-        clientBuilder.withToken(TOKEN);
-        if (login) {
-            iDiscordClient = clientBuilder.login();
-        } else {
-            iDiscordClient = clientBuilder.build();
-            iDiscordClient.login();
-            login = true;
-        }
-        messageBuilder = new MessageBuilder(iDiscordClient);
-        eventDispatcher = iDiscordClient.getDispatcher();
+            System.out.println("Initializing DiscordService");
+            ClientBuilder clientBuilder = new ClientBuilder();
+            this.TOKEN = env.getRequiredProperty("token");
+            clientBuilder.withToken(TOKEN);
+            if (login) {
+                iDiscordClient = clientBuilder.login();
+            } else {
+                iDiscordClient = clientBuilder.build();
+                iDiscordClient.login();
+                login = true;
+            }
+            messageBuilder = new MessageBuilder(iDiscordClient);
+            eventDispatcher = iDiscordClient.getDispatcher();
             eventDispatcher.registerListener(interfaceListener);
             eventDispatcher.registerListener(chatListener);
             initialized = true;
         } else {
             System.out.println("DiscordService already initialized");
-    }
+        }
     }
 
     @PreDestroy
@@ -194,4 +207,43 @@ public class DiscordService {
         }
     }
 
+    public void registerUsers(){
+        //Update user list with new nicknames or add new users to DB from channel mainchannel
+        for (IUser iUser : iDiscordClient.getChannelByID(mainchannel).getUsersHere()) {
+            if (userService.getUsers().containsKey(iUser.getID())) {
+                userService.getUsers().get(iUser.getID()).setName(iUser.getName());
+                userService.getUsers().get(iUser.getID()).setDisplayName(iUser.getDisplayName(iDiscordClient.getChannelByID(mainchannel).getGuild()));
+            } else {
+                User user = new User();
+                user.setId(iUser.getID());
+                user.setName(iUser.getName());
+                user.setDisplayName(iUser.getDisplayName(iDiscordClient.getChannelByID(mainchannel).getGuild()));
+                userService.addUser(user);
+            }
+        }
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public DBUtils getDbUtils() {
+        return dbUtils;
+    }
+
+    public CommandFactory getCommandFactory() {
+        return commandFactory;
+    }
+
+    public IDiscordClient getiDiscordClient() {
+        return iDiscordClient;
+    }
+
+    public String getMainchannel() {
+        return mainchannel;
+    }
+
+    public void setMainchannel(String mainchannel) {
+        this.mainchannel = mainchannel;
+    }
 }

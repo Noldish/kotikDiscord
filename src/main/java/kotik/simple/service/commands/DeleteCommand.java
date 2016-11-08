@@ -1,26 +1,29 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.service.CommandManager;
 import sx.blah.discord.handle.obj.IMessage;
 
-import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by Romique on 19.10.2016.
  */
-public class DeleteCommand implements CommandInterface, Serializable {
+public class DeleteCommand extends AbstractCommand {
 
+    private final static String NAME = "!delete";
+	private final static String DESC = "Команда для удаления команд";
 
-	private String description = "Команда для удаления команд";
+    public DeleteCommand(){
+        super(NAME, DESC);
+    }
 
-    @Override
-    public void eval(IMessage message, CommandManager commandManager){
-        String commandName = message.getContent().substring(8);
-        commandManager.deleteCommand(commandName);
+    public DeleteCommand(HashMap params){
+        super(params.get("name").toString(), params.get("description").toString());
     }
 
     @Override
-    public String toString(){
-        return description;
+    public void eval(IMessage message){
+
+        String commandName = message.getContent().substring(8);
+        getCommandManager().deleteCommand(commandName);
     }
 }

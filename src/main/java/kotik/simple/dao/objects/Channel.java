@@ -1,4 +1,4 @@
-package kotik.simple.objects;
+package kotik.simple.dao.objects;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

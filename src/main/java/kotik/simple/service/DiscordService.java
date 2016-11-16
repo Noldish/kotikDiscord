@@ -11,7 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import com.google.gson.JsonSyntaxException;
 import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
-import kotik.simple.objects.User;
+import kotik.simple.dao.objects.User;
 import kotik.simple.service.commands.CommandFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;

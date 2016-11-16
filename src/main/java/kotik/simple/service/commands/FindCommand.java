@@ -1,6 +1,5 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.objects.AbstractCommand;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 

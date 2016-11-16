@@ -1,6 +1,5 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.objects.AbstractCommand;
 import sx.blah.discord.handle.obj.IMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class GetDcpCommand  extends AbstractCommand {
 
     @Override
     public void eval(IMessage message){
-//        getCommandManager().getDiscordService().sendMessage("У тебя " + getCommandManager().getDiscordService().getUserService().getUserByName(message.getAuthor().getName()).getDcp() + " дцп!", message.getChannel());
+        getCommandManager().getDiscordService().sendMessage("У тебя " + getCommandManager().getDiscordService().getUserService().getUserByName(message.getAuthor().getName()).getDcp() + " дцп!", message.getChannel());
     }
 
 }

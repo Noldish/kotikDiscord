@@ -1,6 +1,6 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.objects.AbstractCommand;
+import kotik.simple.dao.DBData;
 import kotik.simple.service.CommandManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,27 +51,26 @@ public class CommandFactory {
         o.put("description", description);
         return create(TextCommand.class, o);
     }
-//
-//    public CommandInterface createFromDBData(DBData dbData){
-//        try {
-//            String classname = dbData.get("class");
-//            Map o = new HashMap<>();
-//            for (Map.Entry e : dbData.getValues().entrySet()){
-//                if (!e.getKey().equals("class")){
-//                    o.put(e.getKey(), e.getValue());
-//                }
-//            }
-//            Class clazz = Class.forName(classname);
-//            if (o.size()>0) {
-//                return create(clazz, o);
-//            } else {
-//                return create(clazz);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
-
+    public CommandInterface createFromDBData(DBData dbData){
+        try {
+            String classname = dbData.get("class");
+            Map o = new HashMap<>();
+            for (Map.Entry e : dbData.getValues().entrySet()){
+                if (!e.getKey().equals("class")){
+                    o.put(e.getKey(), e.getValue());
+                }
+            }
+            Class clazz = Class.forName(classname);
+            if (o.size()>0) {
+                return create(clazz, o);
+            } else {
+                return create(clazz);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }

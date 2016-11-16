@@ -1,6 +1,5 @@
 package kotik.simple.service.commands;
 
-import kotik.simple.objects.AbstractCommand;
 import sx.blah.discord.handle.obj.IMessage;
 
 public class SoundCommand extends AbstractCommand {

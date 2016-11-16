@@ -46,7 +46,7 @@ public class DBConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "kotik.simple.objects" });
+        sessionFactory.setPackagesToScan(new String[] { "kotik.simple.dao.objects" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

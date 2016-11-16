@@ -1,4 +1,4 @@
-package kotik.simple.db;
+package kotik.simple.dao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,4 +38,8 @@ public class DBData {
         this.table = table;
     }
 
+    public DBData(String table, Map<String, String> values) {
+        this.table = table;
+        this.values = values;
+    }
 }

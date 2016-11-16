@@ -9,7 +9,6 @@ import javax.annotation.PreDestroy;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.JsonSyntaxException;
-import kotik.simple.db.DBUtils;
 import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
 import kotik.simple.objects.User;
@@ -71,8 +70,6 @@ public class DiscordService {
     @Autowired
     private ChatListener chatListener;
 
-    @Autowired
-    private DBUtils dbUtils;
 
     @Autowired
     private UserService userService;
@@ -225,10 +222,6 @@ public class DiscordService {
 
     public UserService getUserService() {
         return userService;
-    }
-
-    public DBUtils getDbUtils() {
-        return dbUtils;
     }
 
     public CommandFactory getCommandFactory() {

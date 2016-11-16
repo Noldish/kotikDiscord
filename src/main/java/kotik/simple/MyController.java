@@ -1,8 +1,5 @@
 package kotik.simple;
 
-
-import kotik.simple.db.DBData;
-import kotik.simple.db.DBUtils;
 import kotik.simple.service.CommandManager;
 import kotik.simple.service.DiscordService;
 import kotik.simple.service.commands.*;
@@ -26,9 +23,6 @@ import java.util.Map;
 public class MyController {
     @Autowired
     DiscordService discordService;
-
-    @Autowired
-    private DBUtils dbUtils;
 
     @Autowired
     CommandManager commandManager;
@@ -95,15 +89,15 @@ public class MyController {
         return result.toString();
     }
 
-    @RequestMapping("/test")
-    public void test(){
-        TextCommand tx = (TextCommand) commandFactory.createTextCommand("!вася", "петя");
-        dbUtils.insertData(commandManager.generateDBData(tx));
-        List<CommandInterface> commands = new ArrayList<>();
-        List<DBData> list = dbUtils.getData("testcommands");
-        for (DBData data : list) {
-            CommandInterface command = commandFactory.createFromDBData(data);
-            commands.add(command);
-        }
-    }
+//    @RequestMapping("/test")
+//    public void test(){
+//        TextCommand tx = (TextCommand) commandFactory.createTextCommand("!вася", "петя");
+//        dbUtils.insertData(commandManager.generateDBData(tx));
+//        List<CommandInterface> commands = new ArrayList<>();
+//        List<DBData> list = dbUtils.getData("testcommands");
+//        for (DBData data : list) {
+//            CommandInterface command = commandFactory.createFromDBData(data);
+//            commands.add(command);
+//        }
+//    }
 }

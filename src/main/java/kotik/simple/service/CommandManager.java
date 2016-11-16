@@ -1,7 +1,5 @@
 package kotik.simple.service;
 
-import kotik.simple.db.DBData;
-import kotik.simple.db.DBUtils;
 import kotik.simple.service.commands.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,19 +28,16 @@ public class CommandManager {
     @Autowired
     CommandFactory commandFactory;
 
-    @Autowired
-    DBUtils dbUtils;
-
 
 	public CommandManager() {
 	}
 
     @PostConstruct
     public void init(){
-        for (DBData data : dbUtils.getData(TABLE)) {
-            CommandInterface command = commandFactory.createFromDBData(data);
-            this.commands.put(command.getName(), command);
-        }
+//        for (DBData data : dbUtils.getData(TABLE)) {
+//            CommandInterface command = commandFactory.createFromDBData(data);
+//            this.commands.put(command.getName(), command);
+//        }
     }
 
 	public String handle() {
@@ -86,7 +81,7 @@ public class CommandManager {
 
 	public String addCommand(String message, CommandInterface command) {
         if (!commands.containsKey(message)) {
-            dbUtils.insertData(generateDBData(command));
+//            dbUtils.insertData(generateDBData(command));
             commands.put(message, command);
             return "Ok";
         } else {
@@ -110,22 +105,22 @@ public class CommandManager {
 	}
 
 
-    public DBData generateDBData(CommandInterface command){
-        DBData dbData = new DBData();
-        dbData.setTable(TABLE);
-        dbData.add("class", command.getClass().getName());
-        dbData.add("name", command.getName());
-        dbData.add("description", command.getDescription());
-        StringBuilder sb = new StringBuilder();
-        if (command.getPermitted_userlist().size() > 0) {
-            for (String permission : command.getPermitted_userlist()) {
-                sb.append(permission).append(",");
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            dbData.add("permissions", sb.toString());
-        }
-        return dbData;
-    }
+//    public DBData generateDBData(CommandInterface command){
+//        DBData dbData = new DBData();
+//        dbData.setTable(TABLE);
+//        dbData.add("class", command.getClass().getName());
+//        dbData.add("name", command.getName());
+//        dbData.add("description", command.getDescription());
+//        StringBuilder sb = new StringBuilder();
+//        if (command.getPermitted_userlist().size() > 0) {
+//            for (String permission : command.getPermitted_userlist()) {
+//                sb.append(permission).append(",");
+//            }
+//            sb.deleteCharAt(sb.length() - 1);
+//            dbData.add("permissions", sb.toString());
+//        }
+//        return dbData;
+//    }
 
 	public Map<String, CommandInterface> getCommands() {
 		return commands;

@@ -1,6 +1,5 @@
 package kotik.simple.db;
 
-import kotik.simple.service.commands.AbstractCommand;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

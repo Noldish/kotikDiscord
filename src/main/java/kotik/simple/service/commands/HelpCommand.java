@@ -1,5 +1,6 @@
 package kotik.simple.service.commands;
 
+import kotik.simple.objects.AbstractCommand;
 import sx.blah.discord.handle.obj.IMessage;
 
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 /**
  * Created by Romique on 19.10.2016.
  */
-public class HelpCommand extends AbstractCommand{
+public class HelpCommand extends AbstractCommand {
 
     private final static String NAME = "!help";
 	private final static String DESC = "Показывает список команд";

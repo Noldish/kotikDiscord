@@ -1,5 +1,6 @@
 package kotik.simple.service.commands;
 
+import kotik.simple.objects.AbstractCommand;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
@@ -9,7 +10,7 @@ import java.util.Random;
 /**
  * Created by Romique on 19.10.2016.
  */
-public class FindCommand extends AbstractCommand{
+public class FindCommand extends AbstractCommand {
 
     private final static String NAME = "!найди пидораса";
     private final static String DESC = "Ищет пидорасов в чате";

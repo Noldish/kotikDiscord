@@ -74,8 +74,6 @@ public class DiscordService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    CommandFactory commandFactory;
 
     public EventDispatcher getEventDispatcher() {
         return eventDispatcher;
@@ -224,9 +222,6 @@ public class DiscordService {
         return userService;
     }
 
-    public CommandFactory getCommandFactory() {
-        return commandFactory;
-    }
 
     public IDiscordClient getiDiscordClient() {
         return iDiscordClient;

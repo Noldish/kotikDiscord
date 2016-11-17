@@ -12,11 +12,24 @@ import java.util.Map;
 public interface RepositoryManager {
 
     public User getUser(String userId);
+
     public boolean addUser(User user);
+
     public CommandInterface getCommand(String commandName);
+
     public boolean addCommand(CommandInterface command);
+
     public Channel getChannel(String channelId);
+
     public boolean addChannel(Channel channel);
-    public Map<String, CommandInterface>  getAllCommands();
+
+    public Map<String, CommandInterface> getAllCommands();
+
     public Map<String, User> getAllUsers();
+
+    public Boolean deleteUser(String userId);
+
+    public Boolean deleteCommand(String commandName);
+
+    public Boolean deleteChannel(String channelId);
 }

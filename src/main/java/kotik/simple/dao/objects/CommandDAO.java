@@ -23,7 +23,6 @@ public class CommandDAO {
     @NotEmpty
     @Column(name="description", nullable=false)
     public String description;
-    @NotEmpty
     @Column(name="permissions", nullable=false)
     public String permissions;
 

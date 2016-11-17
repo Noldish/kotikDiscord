@@ -50,4 +50,13 @@ public class Channel {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public Channel() {
+    }
+
+    public Channel(String id, String name, String topic) {
+        this.id = id;
+        this.name = name;
+        this.topic = topic;
+    }
 }

@@ -1,5 +1,6 @@
 package kotik.simple.service;
 
+import kotik.simple.BotUtils;
 import kotik.simple.dao.RepositoryManager;
 import kotik.simple.service.commands.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,9 @@ public class CommandManager {
 
 	public void processCommmand(IMessage message) {
         Boolean flag = false;
+        String commandKey = BotUtils.getCommandKey(message.getContent());
         for (Map.Entry<String, CommandInterface> e : commands.entrySet()){
-            if ((!flag) && (matchCommand(message, e.getKey()))){
+            if ((!flag) && (matchCommand(commandKey, e.getKey()))){
                 e.getValue().eval(message);
                 flag = true;
             }
@@ -67,12 +69,12 @@ public class CommandManager {
         }
 	}
 	
-	private Boolean matchCommand(IMessage message, String command){
-        if (!message.getContent().matches("^" + command + ".*")){    //Если начинается сообщение не как команда
+	private Boolean matchCommand(String message, String command){
+        if (!message.matches("^" + command + ".*")){    //Если начинается сообщение не как команда
             return false;
-        } else if (command.length() == message.getContent().length()) { //Если целое сообщение = целой команде
+        } else if (command.length() == message.length()) { //Если целое сообщение = целой команде
             return true;
-        } else if (!Character.isWhitespace(message.getContent().charAt(command.length()))){  //Если оно начинается как команда, но после этого идет не пробел. Например !addhui
+        } else if (!Character.isWhitespace(message.charAt(command.length()))){  //Если оно начинается как команда, но после этого идет не пробел. Например !addhui
             return false;
         } else {
             return true;  //Если сообщение не совпадает с командой, при этом начинается с команды, после чего идет пробел
@@ -98,6 +100,7 @@ public class CommandManager {
 	public String deleteCommand(String message) {
 		if (commands.containsKey(message)) {
             commands.remove(message);
+            repository.deleteCommand(message);
 			return "Ok";
 		} else {
 			return "This command doesn't exist";

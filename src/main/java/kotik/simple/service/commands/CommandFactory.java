@@ -3,6 +3,7 @@ package kotik.simple.service.commands;
 import kotik.simple.dao.DBData;
 import kotik.simple.service.CommandManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class CommandFactory {
 
     @Autowired
+    @Lazy
     CommandManager commandManager;
 
     public AbstractCommand create(String name, Class<? extends AbstractCommand> clazz){

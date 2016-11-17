@@ -1,5 +1,6 @@
 package kotik.simple.service.commands;
 
+import kotik.simple.BotUtils;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
@@ -11,23 +12,49 @@ import java.util.Random;
  */
 public class FindCommand extends AbstractCommand {
 
-    private final static String NAME = "!найди пидораса";
-    private final static String DESC = "Ищет пидорасов в чате";
+    private final static String NAME = "!найди";
+    private final static String DESC = "Ищет в чате";
 
-    public FindCommand(){
+    Random randomGenerator = new Random();;
+
+
+    public FindCommand() {
         super(NAME, DESC);
     }
 
-    public FindCommand(HashMap params){
+    public FindCommand(HashMap params) {
         super(params.get("name").toString(), params.get("description").toString());
     }
 
     @Override
     public void eval(IMessage message) {
-        Random randomGenerator;
+        String wut = BotUtils.getCommandParams(message.getContent()).get(0);
+        switch(wut){
+            case "пидораса":
+                findPidorCommand(message);
+                break;
+            case "котика":
+                findKotik(message);
+                break;
+            default:
+                findNull(message);
+                break;
+        }
+    }
+
+    private void findNull(IMessage message) {
+        getCommandManager().getDiscordService().sendMessage("Сударь, и оно вам надо?!", message.getChannel());
+    }
+
+    private void findKotik(IMessage message) {
+        IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
+        getCommandManager().getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " - пушистый котёночек!", message.getChannel());
+    }
+
+    private void findPidorCommand(IMessage message) {
+
         String EllId = "219739436789923850";
         Double specialLuck = 0.4;
-        randomGenerator = new Random();
         IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
         Double luck = randomGenerator.nextDouble();
         System.out.println(message.getAuthor().getID() + " с ником " + message.getAuthor().getName() + " запросил найти пидораса. " + "Колесо фортуны показало удачу " + luck.toString());
@@ -43,5 +70,6 @@ public class FindCommand extends AbstractCommand {
             getCommandManager().getDiscordService().sendMessage("В зеркало посмотри, петушок!", message.getChannel());
         }
     }
+
 
 }

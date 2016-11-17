@@ -79,11 +79,11 @@ public class MyController {
     	result.append(commandManager.addCommand(commandFactory.create(FindCommand.class))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(HelpCommand.class))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(AddCommand.class))+"\n");
-    	//result.append(commandManager.addCommand("!badumts", new SoundCommand("/","joke_drum_effect.mp3"))+"\n");
-        //result.append(commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"))+"\n");
-        //result.append(commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"))+"\n");
-        //result.append(commandManager.addCommand("!stopdj", new SoundCommand())+"\n");
-    	//result.append(commandManager.addCommand(commandFactory.create(DeleteCommand.class))+"\n");
+//    	result.append(commandManager.addCommand("!badumts", new SoundCommand("/","joke_drum_effect.mp3"))+"\n");
+//        result.append(commandManager.addCommand("!wtfradio", new SoundCommand("http://vprbbc.streamguys.net:80/vprbbc24.mp3"))+"\n");
+//        result.append(commandManager.addCommand("!radiorock", new SoundCommand("http://45.79.186.124:8191/stream"))+"\n");
+//        result.append(commandManager.addCommand("!stopdj", new SoundCommand())+"\n");
+    	result.append(commandManager.addCommand(commandFactory.create(DeleteCommand.class))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(AddDcpCommand.class).addPermission("228216611641753600"))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(GetDcpCommand.class))+"\n");
         return result.toString();

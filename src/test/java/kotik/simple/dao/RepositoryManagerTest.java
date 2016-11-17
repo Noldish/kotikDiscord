@@ -18,6 +18,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Roman_Kuznetcov on 16.11.2016.
  */
@@ -57,7 +60,8 @@ public class RepositoryManagerTest {
 
     @Test
     public void getAllCommands() throws Exception {
-
+        Map<String,CommandInterface> commands = dao.getAllCommands();
+        System.out.println(commands);
     }
 
     @Test

@@ -68,7 +68,7 @@ public class RepositoryManagerImpl implements RepositoryManager {
 
     @Override
     public Map<String, CommandInterface> getAllCommands() {
-        List<CommandDAO> commands = (List<CommandDAO>) sessionFactory.getCurrentSession().createQuery("from commands").getResultList();
+        List<CommandDAO> commands = (List<CommandDAO>) sessionFactory.getCurrentSession().createQuery("from CommandDAO").getResultList();
         Map<String, CommandInterface> result = new HashMap<>();
         for (CommandDAO command : commands) {
             result.put(command.name, commandFactory.createFromDBData(new DBData("commands", command.getAsMapForDBData())));
@@ -78,7 +78,7 @@ public class RepositoryManagerImpl implements RepositoryManager {
 
     @Override
     public Map<String, User> getAllUsers() {
-        List<User> users = (List<User>) sessionFactory.getCurrentSession().createQuery("from users").getResultList();
+        List<User> users = (List<User>) sessionFactory.getCurrentSession().createQuery("from User").getResultList();
         Map<String, User> result = new HashMap<>();
         for (User user : users) {
             result.put(user.getId(), user);

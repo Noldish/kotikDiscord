@@ -1,5 +1,6 @@
 package kotik.simple.dao.objects;
 
+import kotik.simple.dao.DBData;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -40,10 +41,11 @@ public class CommandDAO {
         Map<String,String> result = new HashMap<>();
         result.put("class",className);
         result.put("name",name);
-        result.put("description",className);
+        result.put("description",description);
         if (!"".equals(permissions)) {
-            result.put("permissions", className);
+            result.put("permissions", permissions);
         }
         return result;
     }
+
 }

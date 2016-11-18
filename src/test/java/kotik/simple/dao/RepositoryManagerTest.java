@@ -6,6 +6,7 @@ import kotik.simple.dao.objects.CommandDAO;
 import kotik.simple.dao.objects.User;
 import kotik.simple.service.CommandManager;
 import kotik.simple.service.commands.CommandInterface;
+import kotik.simple.service.commands.DeleteCommand;
 import kotik.simple.service.commands.TextCommand;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -45,7 +46,7 @@ public class RepositoryManagerTest {
     public void addCommand() throws Exception {
         dao.addCommand(new TextCommand("!testcommand","testcommandtext"));
         CommandInterface command = dao.getCommand("!testcommand");
-        Assert.assertEquals(command.getName(),"!testcommand");
+        Assert.assertEquals(command.getDescription(),"testcommandtext");
         dao.deleteCommand(command.getName());
     }
 
@@ -68,6 +69,15 @@ public class RepositoryManagerTest {
     public void getAllUsers() throws Exception {
 
     }
+
+//    @Test
+//    public void getCommand2(){
+//
+//        DeleteCommand command = (DeleteCommand) dao.getCommand("!delete");
+//        System.out.println(command);
+//    }
+
+
 
     @AfterClass
     public static void doYourOneTimeTeardown() {

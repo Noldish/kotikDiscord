@@ -18,7 +18,7 @@ public class TextCommand extends AbstractCommand {
     }
 
     public TextCommand(HashMap params){
-        super(params.get("name").toString(), params.get("description").toString());
+        super(params.get("name").toString(), params.get("description").toString(), (String) params.get("permissions"));
     }
 
     @Override

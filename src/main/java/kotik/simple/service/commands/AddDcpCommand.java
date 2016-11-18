@@ -13,16 +13,17 @@ public class AddDcpCommand extends AbstractCommand {
     private final static String DESC = "Команда для добавления дцп";
     private final static String separator = ";";
 
-    public AddDcpCommand(){
+    public AddDcpCommand() {
         super(NAME, DESC);
     }
 
-    public AddDcpCommand(HashMap params){
-        super(params.get("name").toString(), params.get("description").toString());
+    public AddDcpCommand(HashMap params) {
+            super(params.get("name").toString(), params.get("description").toString(), (String) params.get("permissions"));
     }
 
+
     @Override
-    public void eval(IMessage message){
+    public void eval(IMessage message) {
         if (getPermitted_userlist().contains(message.getAuthor().getID())) {
             String[] parsedMessage = message.getContent().substring(8).trim().split(separator);
             String user = parsedMessage[0].trim();

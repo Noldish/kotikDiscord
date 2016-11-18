@@ -17,15 +17,17 @@ import java.util.Map;
 @Service
 public class CommandManager {
 
-	private final String COMMAND_PATTERN = "^!.+";
+    private final String COMMAND_PATTERN = "^!.+";
     private final String WRONG_COMMAND_MESSAGE = "Сам свои команды выполняй, пёс!";
+    private final String PERMISSION_VIOLATION_MESSAGE = "Команда доступна только VIP! Внесите бабло разработчикам бота.";
     private final static String TABLE = "commands";
-	private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
+    private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
 
-	@Autowired
-	private DiscordService discordService;
+    @Autowired
+    private DiscordService discordService;
 
-    @Autowired LiarService liarService;
+    @Autowired
+    LiarService liarService;
 
     @Autowired
     CommandFactory commandFactory;
@@ -33,55 +35,60 @@ public class CommandManager {
     @Autowired
     RepositoryManager repository;
 
-	public CommandManager() {
-	}
+    public CommandManager() {
+    }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         commands = repository.getAllCommands();
     }
 
-	public String handle() {
-		return "Anus sebe derni, pes";
-	}
+    public String handle() {
+        return "Anus sebe derni, pes";
+    }
 
-	public void process(IMessage message) {
+    public void process(IMessage message) {
         if (isCommand(message.getContent())) {
             processCommmand(message);
         }
     }
 
-	public boolean isCommand(String message) {
-		return message.matches(COMMAND_PATTERN);
-	}
+    public boolean isCommand(String message) {
+        return message.matches(COMMAND_PATTERN);
+    }
 
-	public void processCommmand(IMessage message) {
+    public void processCommmand(IMessage message) {
         Boolean flag = false;
         String commandKey = BotUtils.getCommandKey(message.getContent());
-        for (Map.Entry<String, CommandInterface> e : commands.entrySet()){
-            if ((!flag) && (matchCommand(commandKey, e.getKey()))){
-                e.getValue().eval(message);
-                flag = true;
+        for (Map.Entry<String, CommandInterface> e : commands.entrySet()) {
+            if ((!flag) && (matchCommand(commandKey, e.getKey()))) {
+                if (e.getValue().getPermitted_userlist().contains(message.getAuthor().getID()) || e.getValue().getPermitted_userlist().isEmpty()) {
+                    e.getValue().eval(message);
+                    flag = true;
+                } else {
+                    discordService.sendMessage(PERMISSION_VIOLATION_MESSAGE, message.getChannel());
+                    flag = true;
+                }
             }
         }
-        if (!flag){
+        if (!flag) {
             discordService.sendMessage(WRONG_COMMAND_MESSAGE, message.getChannel());
         }
-	}
-	
-	private Boolean matchCommand(String message, String command){
-        if (!message.matches("^" + command + ".*")){    //Если начинается сообщение не как команда
+    }
+
+    private Boolean matchCommand(String message, String command) {
+        if (!message.matches("^" + command + ".*")) {    //Если начинается сообщение не как команда
             return false;
         } else if (command.length() == message.length()) { //Если целое сообщение = целой команде
             return true;
-        } else if (!Character.isWhitespace(message.charAt(command.length()))){  //Если оно начинается как команда, но после этого идет не пробел. Например !addhui
+        } else if (!Character.isWhitespace(message.charAt(command.length()))) {  //Если оно начинается как команда, но после этого идет не пробел. Например !addhui
             return false;
         } else {
             return true;  //Если сообщение не совпадает с командой, при этом начинается с команды, после чего идет пробел
         }
-	}
+    }
 
-	public String addCommand(String message, CommandInterface command) {
+    public String addCommand(String message, CommandInterface command) {
         if (!commands.containsKey(message)) {
             repository.addCommand(command);
             commands.put(message, command);
@@ -97,23 +104,23 @@ public class CommandManager {
     }
 
     //TODO ПЕРЕДЕЛАТЬ ЭТО
-	public String deleteCommand(String message) {
-		if (commands.containsKey(message)) {
+    public String deleteCommand(String message) {
+        if (commands.containsKey(message)) {
             commands.remove(message);
             repository.deleteCommand(message);
-			return "Ok";
-		} else {
-			return "This command doesn't exist";
-		}
-	}
+            return "Ok";
+        } else {
+            return "This command doesn't exist";
+        }
+    }
 
-	public Map<String, CommandInterface> getCommands() {
-		return commands;
-	}
+    public Map<String, CommandInterface> getCommands() {
+        return commands;
+    }
 
-	public DiscordService getDiscordService() {
-		return discordService;
-	}
+    public DiscordService getDiscordService() {
+        return discordService;
+    }
 
     public CommandFactory getCommandFactory() {
         return commandFactory;

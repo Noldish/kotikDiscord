@@ -2,6 +2,7 @@ package kotik.simple.service.commands;
 
 import sx.blah.discord.handle.obj.IMessage;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -17,7 +18,7 @@ public class DeleteCommand extends AbstractCommand {
     }
 
     public DeleteCommand(HashMap params){
-        super(params.get("name").toString(), params.get("description").toString());
+        super(params.get("name").toString(), params.get("description").toString(), (String) params.get("permissions"));
     }
 
     @Override

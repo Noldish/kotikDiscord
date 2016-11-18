@@ -18,7 +18,7 @@ public class AddCommand extends AbstractCommand {
     }
 
     public AddCommand(HashMap params){
-        super(params.get("name").toString(), params.get("description").toString());
+        super(params.get("name").toString(), params.get("description").toString(),(String) params.get("permissions"));
     }
 
     @Override

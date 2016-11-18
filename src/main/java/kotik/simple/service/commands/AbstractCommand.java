@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,6 +29,13 @@ import java.util.List;
         this.description = description;
     }
 
+    public AbstractCommand(String name, String description, String permissions){
+        this.className = this.getClass().getName();
+        this.name = name;
+        this.description = description;
+        if (permissions!=null)
+        this.permitted_userlist = Arrays.asList(permissions.split(", "));
+    }
     public String toString(){
         return description;
     }

@@ -19,7 +19,7 @@ public class GetDcpCommand  extends AbstractCommand {
     }
 
     public GetDcpCommand(HashMap params){
-        super(params.get("name").toString(), params.get("description").toString());
+        super(params.get("name").toString(), params.get("description").toString(), (String) params.get("permissions"));
     }
 
     @Override

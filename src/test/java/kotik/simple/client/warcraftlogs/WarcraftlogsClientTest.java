@@ -27,9 +27,8 @@ public class WarcraftlogsClientTest {
     @Test
     public void getSomeInfo() throws Exception {
 
-        Rank rank = client.getSomeInfo();
-
-        System.out.println(rank);
+//        Rank rank = client.getSomeInfo();
+//        System.out.println(rank);
     }
 
 }

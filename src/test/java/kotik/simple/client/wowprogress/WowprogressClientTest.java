@@ -27,8 +27,8 @@ public class WowprogressClientTest {
 
     @Test
     public void getGuildRanking() throws Exception {
-        List<Guild> guilds = client.getGuildRanking();
-        System.out.println(guilds);
+//        List<Guild> guilds = client.getGuildRanking();
+//        System.out.println(guilds);
     }
 
 }

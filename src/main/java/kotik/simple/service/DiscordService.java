@@ -3,12 +3,15 @@ package kotik.simple.service;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.JsonSyntaxException;
+import kotik.simple.client.wowprogress.WowprogressClient;
+import kotik.simple.client.wowprogress.objects.Guild;
 import kotik.simple.listener.ChatListener;
 import kotik.simple.listener.InterfaceListener;
 import kotik.simple.dao.objects.User;
@@ -73,6 +76,9 @@ public class DiscordService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WowprogressClient wowprogress;
 
 
     public EventDispatcher getEventDispatcher() {
@@ -218,10 +224,22 @@ public class DiscordService {
         }
     }
 
+    public void showRanking(IMessage message){
+
+        List<Guild> guilds = wowprogress.getGuildRanking();
+        StringBuilder sb = new StringBuilder();
+        guilds = guilds.stream().limit(10).collect(Collectors.toList());
+        for(Guild guild:guilds){
+            sb.append(guild.toString() + "\n");
+        }
+        System.out.println(sb.toString());
+        sendMessage(sb.toString(),message.getChannel());
+    };
+
+
     public UserService getUserService() {
         return userService;
     }
-
 
     public IDiscordClient getiDiscordClient() {
         return iDiscordClient;

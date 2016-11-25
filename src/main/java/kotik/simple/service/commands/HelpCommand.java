@@ -24,10 +24,17 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public void eval(IMessage message){
         StringBuilder sb = new StringBuilder();
-        sb.append("Доступные команды:  ");
+        sb.append("**Доступные команды:**");
+        sb.append("```xml\n");
         for (String command : getCommandManager().getCommands().keySet()){
-            sb.append(command).append("  ");
+            sb.append("<"+fixedLengthString(command+">",25));
         }
+        sb.append("```");
         getCommandManager().getDiscordService().sendMessage(sb.toString(), message.getChannel());
+    }
+
+
+    public static String fixedLengthString(String string, int length) {
+        return String.format("%1$"+(-length)+ "s", string);
     }
 }

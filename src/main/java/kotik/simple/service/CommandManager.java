@@ -24,6 +24,9 @@ public class CommandManager {
     private Map<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
 
     @Autowired
+    private SoundManager soundManager;
+
+    @Autowired
     private DiscordService discordService;
 
     @Autowired
@@ -103,7 +106,11 @@ public class CommandManager {
         return addCommand(message, command);
     }
 
-    //TODO ПЕРЕДЕЛАТЬ ЭТО
+    public String addSound(CommandInterface command) {
+        String message = command.getName();
+        return addCommand(message, command);
+    }
+
     public String deleteCommand(String message) {
         if (commands.containsKey(message)) {
             commands.remove(message);
@@ -125,4 +132,6 @@ public class CommandManager {
     public CommandFactory getCommandFactory() {
         return commandFactory;
     }
+
+    public SoundManager getSoundManager() {return soundManager;}
 }

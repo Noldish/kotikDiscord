@@ -26,11 +26,6 @@ public final class Guild {
 
     @Override
     public String toString() {
-        return  name +
-                " score=" + score +
-                ", world_rank=" + world_rank +
-                ", area_rank=" + area_rank +
-                ", realm_rank=" + realm_rank
-                ;
+        return name + " - " + world_rank;
     }
 }

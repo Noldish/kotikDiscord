@@ -87,6 +87,9 @@ public class MyController {
         result.append(commandManager.addCommand(commandFactory.create(AddDcpCommand.class).addPermission("228216611641753600"))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(GetDcpCommand.class))+"\n");
         result.append(commandManager.addCommand(commandFactory.create(RankingCommand.class))+"\n");
+        result.append(commandManager.addCommand(commandFactory.create(AddSoundCommand.class).addPermission("219880818716180480"))+"\n");
+        result.append(commandManager.addCommand(commandFactory.create(GetSoundCommand.class))+"\n");
+        result.append(commandManager.addCommand(commandFactory.create(StopSoundCommand.class))+"\n");
         return result.toString();
     }
 

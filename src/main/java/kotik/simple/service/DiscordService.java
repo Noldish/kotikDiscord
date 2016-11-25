@@ -136,59 +136,39 @@ public class DiscordService {
         }
     }
 
-    public void playSoundToChannelFromURL(IMessage message, String url) {
-        IGuild guild = message.getGuild();
-        List<IVoiceChannel> channels = message.getAuthor().getConnectedVoiceChannels();
-        IAudioManager manager = guild.getAudioManager();
-        try {
-            IAudioProvider provider = new URLProvider(url);
-            manager.setAudioProvider(provider);
-            voiceChannel = channels.get(0);
-			if (!voiceChannel.getName().equals("Адмирал")){
-                voiceChannel.join();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (MissingPermissionsException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void playSoundToChannelFromFile(IMessage message, String path, String name) {
-    	
-    	Resource res = new ClassPathResource(path+name);
-        IGuild guild = message.getGuild();
-        List<IVoiceChannel> channels = message.getAuthor().getConnectedVoiceChannels();
-        IAudioManager manager = guild.getAudioManager();
-        try {
-            IAudioProvider provider = new FileProvider(res.getFile());
-            manager.setAudioProvider(provider);
-            voiceChannel = channels.get(0);
-			if (!voiceChannel.getName().equals("Адмирал")){
-                voiceChannel.join();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (MissingPermissionsException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stopSound(IMessage message) {
-        IGuild guild = message.getGuild();
-        IAudioManager manager = guild.getAudioManager();
-        manager.setAudioProvider(new DefaultProvider());
-        voiceChannel.leave();
-        /*List<IVoiceChannel> channels = guild.getVoiceChannels();
-        for (IVoiceChannel channel:channels){
-            channel.leave();
-        }
-        */
-    }
+//    public void playSoundToChannelFromURL(IAudioManager manager, IVoiceChannel channel, String url) { //параметры: чем, где, откуда
+//
+//        try {
+//            IAudioProvider provider = new URLProvider(url);
+//            manager.setAudioProvider(provider);
+//            voiceChannel = channel;
+//            if (!voiceChannel.getName().equals("Адмирал")) {
+//                voiceChannel.join();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedAudioFileException e) {
+//            e.printStackTrace();
+//        } catch (MissingPermissionsException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    public void playSoundToChannelFromFile(IAudioManager manager, IChannel channel, String path, String name) {
+//
+////    	Resource res = new ClassPathResource(path+name);
+////
+////        IAudioProvider provider = new FileProvider(res.getFile());
+//
+//    }
+//
+//    public void stopSound(IMessage message) {
+//        IGuild guild = message.getGuild();
+//        IAudioManager manager = guild.getAudioManager();
+//        manager.setAudioProvider(new DefaultProvider());
+//        voiceChannel.leave();
+//    }
 
     public IMessage sendBytesAsFile(IChannel channel, byte[] bytes, String mime, String filename) throws JsonSyntaxException, RateLimitException, DiscordException, MissingPermissionsException {
         DiscordUtils.checkPermissions(iDiscordClient, channel, EnumSet.of(Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES));
@@ -229,9 +209,11 @@ public class DiscordService {
         List<Guild> guilds = wowprogress.getGuildRanking();
         StringBuilder sb = new StringBuilder();
         guilds = guilds.stream().limit(10).collect(Collectors.toList());
+        sb.append("```Markdown\n");
         for(Guild guild:guilds){
-            sb.append(guild.toString() + "\n");
+            sb.append("* "+guild.toString() + "\n");
         }
+        sb.append("```");
         System.out.println(sb.toString());
         sendMessage(sb.toString(),message.getChannel());
     };

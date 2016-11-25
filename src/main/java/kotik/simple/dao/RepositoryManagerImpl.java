@@ -2,6 +2,7 @@ package kotik.simple.dao;
 
 import kotik.simple.dao.objects.Channel;
 import kotik.simple.dao.objects.CommandDAO;
+import kotik.simple.dao.objects.Sound;
 import kotik.simple.dao.objects.User;
 import kotik.simple.service.commands.CommandFactory;
 import kotik.simple.service.commands.CommandInterface;
@@ -102,5 +103,21 @@ public class RepositoryManagerImpl implements RepositoryManager {
     public Boolean deleteChannel(String channelId) {
         sessionFactory.getCurrentSession().delete(getChannel(channelId));
         return true;
+    }
+
+    @Override
+    public Sound getSound(String name) {
+        return sessionFactory.getCurrentSession().get(Sound.class, name);
+    }
+
+    @Override
+    public boolean addSound(Sound sound) {
+        sessionFactory.getCurrentSession().saveOrUpdate(sound);
+        return true;
+    }
+
+    @Override
+    public List<Sound> getAllSounds() {
+        return (List<Sound>) sessionFactory.getCurrentSession().createQuery("from Sound").getResultList();
     }
 }

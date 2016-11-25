@@ -1,9 +1,11 @@
 package kotik.simple.dao;
 
 import kotik.simple.dao.objects.Channel;
+import kotik.simple.dao.objects.Sound;
 import kotik.simple.dao.objects.User;
 import kotik.simple.service.commands.CommandInterface;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,4 +34,10 @@ public interface RepositoryManager {
     public Boolean deleteCommand(String commandName);
 
     public Boolean deleteChannel(String channelId);
+
+    public Sound getSound(String name);
+
+    public boolean addSound(Sound sound);
+
+    public List<Sound> getAllSounds();
 }

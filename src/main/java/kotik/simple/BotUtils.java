@@ -13,8 +13,9 @@ public class BotUtils {
         String result = message;
         if (result.indexOf(' ') != -1) {
             result = result.substring(result.indexOf(' ')+1, result.length());
-        }
-        return new ArrayList<String>(Arrays.asList(result.split(";")));
+            return new ArrayList<String>(Arrays.asList(result.split(";")));
+        } else return new ArrayList<String>();
+        
     }
 
     public static String getCommandKey(String message) {

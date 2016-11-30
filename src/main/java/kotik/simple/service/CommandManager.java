@@ -3,6 +3,7 @@ package kotik.simple.service;
 import kotik.simple.BotUtils;
 import kotik.simple.dao.RepositoryManager;
 import kotik.simple.service.commands.*;
+import kotik.simple.service.sound.SoundManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sx.blah.discord.handle.obj.IMessage;

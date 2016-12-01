@@ -38,6 +38,7 @@ import sx.blah.discord.handle.audio.IAudioManager;
 import sx.blah.discord.handle.audio.IAudioProvider;
 import sx.blah.discord.handle.audio.impl.DefaultProvider;
 import sx.blah.discord.handle.impl.events.MessageSendEvent;
+import sx.blah.discord.handle.impl.obj.VoiceChannel;
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.MessageBuilder;
@@ -136,39 +137,12 @@ public class DiscordService {
         }
     }
 
-//    public void playSoundToChannelFromURL(IAudioManager manager, IVoiceChannel channel, String url) { //параметры: чем, где, откуда
-//
-//        try {
-//            IAudioProvider provider = new URLProvider(url);
-//            manager.setAudioProvider(provider);
-//            voiceChannel = channel;
-//            if (!voiceChannel.getName().equals("Адмирал")) {
-//                voiceChannel.join();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (UnsupportedAudioFileException e) {
-//            e.printStackTrace();
-//        } catch (MissingPermissionsException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-//    public void playSoundToChannelFromFile(IAudioManager manager, IChannel channel, String path, String name) {
-//
-////    	Resource res = new ClassPathResource(path+name);
-////
-////        IAudioProvider provider = new FileProvider(res.getFile());
-//
-//    }
-//
-//    public void stopSound(IMessage message) {
-//        IGuild guild = message.getGuild();
-//        IAudioManager manager = guild.getAudioManager();
-//        manager.setAudioProvider(new DefaultProvider());
-//        voiceChannel.leave();
-//    }
+    public void leaveAllVoiceChannels(){
+        List<IVoiceChannel> channels = iDiscordClient.getConnectedVoiceChannels();
+        for (IVoiceChannel channel:channels){
+            channel.leave();
+        }
+    }
 
     public IMessage sendBytesAsFile(IChannel channel, byte[] bytes, String mime, String filename) throws JsonSyntaxException, RateLimitException, DiscordException, MissingPermissionsException {
         DiscordUtils.checkPermissions(iDiscordClient, channel, EnumSet.of(Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES));

@@ -9,16 +9,20 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import kotik.simple.dao.RepositoryManager;
 import kotik.simple.dao.objects.Sound;
 import kotik.simple.service.DiscordService;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sx.blah.discord.handle.audio.IAudioProvider;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 import sx.blah.discord.util.MissingPermissionsException;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Roman_Kuznetcov on 25.11.2016.
@@ -41,6 +45,7 @@ public class SoundManager {
         playerManager = new DefaultAudioPlayerManager();
         playerManager.getConfiguration().setResamplingQuality(AudioConfiguration.ResamplingQuality.LOW);
         playerManager.registerSourceManager(new YoutubeAudioSourceManager());
+        playerManager.setFrameBufferDuration((int) TimeUnit.SECONDS.toMillis(20L));
         playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
 
     }
@@ -71,11 +76,16 @@ public class SoundManager {
     }
 
     public void playSound(List<String> commandParams, IMessage message) {
+        playSound(message.getGuild(),message.getAuthor().getConnectedVoiceChannels().get(0),commandParams.get(0));
+    }
 
-        Sound sound = repository.getSound(commandParams.get(0));
-        IVoiceChannel channel = message.getAuthor().getConnectedVoiceChannels().get(0);
+    public void playSound(IGuild guild, IVoiceChannel chnl, String soundId){
+
+        Sound sound = repository.getSound(soundId);
+        IVoiceChannel channel = chnl;
 
         AudioPlayer player = playerManager.createPlayer();
+        player.setVolume(50);
         trackScheduler = new TrackScheduler(player);
         player.addListener(trackScheduler);
         playerManager.loadItem(sound.url, new AudioLoadResultHandler() {
@@ -102,20 +112,20 @@ public class SoundManager {
             }
 
         });
-
         try {
             channel.join();
             IAudioProvider provider = new LavaAudioProvider(player);
-            message.getGuild().getAudioManager().setAudioProvider(provider);
+            guild.getAudioManager().setAudioProvider(provider);
             trackScheduler.nextTrack();
         } catch (MissingPermissionsException e) {
             e.printStackTrace();
         }
-
     }
+
 
     public void stopSound(IMessage message) {
         trackScheduler.nextTrack();
+        discord.leaveAllVoiceChannels();
     }
 
 

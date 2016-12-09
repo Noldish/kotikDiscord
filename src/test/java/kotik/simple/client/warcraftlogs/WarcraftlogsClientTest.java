@@ -41,14 +41,14 @@ public class WarcraftlogsClientTest {
     @Test
     public void getShots() throws Exception {
 
-        List<Shot> shots = client.getShotsForPlayer("Нолд","ткач-смерти",null, "10");
-
-        final Comparator<Shot> comp = (p1, p2) -> Long.compare( p1.getRank(), p2.getRank());
-        //Shot shot = shots.stream().min(Comparator.comparing(Shot::getRank)).get();
-        Map<Long,List<Shot>> fights = shots.stream().collect(Collectors.groupingBy(Shot::getEncounter));
-        for (Map.Entry<Long,List<Shot>> entry:fights.entrySet()){
-            System.out.println(entry.getValue().stream().min(Comparator.comparing(Shot::getRank)).get());
-        }
+//        List<Shot> shots = client.getShotsForPlayer("Нолд","ткач-смерти",null, "10");
+//
+//        final Comparator<Shot> comp = (p1, p2) -> Long.compare( p1.getRank(), p2.getRank());
+//        //Shot shot = shots.stream().min(Comparator.comparing(Shot::getRank)).get();
+//        Map<Long,List<Shot>> fights = shots.stream().collect(Collectors.groupingBy(Shot::getEncounter));
+//        for (Map.Entry<Long,List<Shot>> entry:fights.entrySet()){
+//            System.out.println(entry.getValue().stream().min(Comparator.comparing(Shot::getRank)).get());
+//        }
     }
 
 

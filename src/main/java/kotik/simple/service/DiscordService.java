@@ -218,7 +218,10 @@ public class DiscordService {
 
         List<String> params = BotUtils.getCommandParams(message.getContent());
 
-        if(params.size()<2) sendMessage("Ох тыж Валера. Параметры: ник;сервер",message.getChannel());
+        if(params.size()<2) {
+            sendMessage("Ох тыж Валера. Параметры: ник;сервер",message.getChannel());
+            return;
+        }
 
         String characterName = params.get(0);
         String serverName = params.get(1);

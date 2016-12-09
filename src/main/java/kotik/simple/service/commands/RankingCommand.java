@@ -29,8 +29,12 @@ public class RankingCommand extends AbstractCommand {
         if (params.isEmpty()){
             getCommandManager().getDiscordService().showRanking(message);
         } else {
-            getCommandManager().getDiscordService().showRankingForPlayer(message);
+            Thread thread = new Thread(){
+                public void run(){
+                    getCommandManager().getDiscordService().showRankingForPlayer(message);
+                }
+            };
+            thread.start();
         }
-
     }
 }

@@ -32,7 +32,7 @@ public class WarcraftlogsClient {
         return restTemplate.getForObject("https://www.warcraftlogs.com:443/v1/rankings/encounter/1864?metric=dps&difficulty=4&class=10&spec=2&region=EU&limit=10&api_key=5afd978c59adb5c59bcc47b68bea32a4",Rank.class);
     }
 
-    public List<Shot> getShotsForPlayer(String characterName, String serverName , String metric, String zone){
+    public List<Shot> getShotsForPlayer(String characterName, String serverName , String metric, String zone,Long difficulty){
 
         String url = "https://www.warcraftlogs.com:443/v1/rankings/character/{charname}/{servername}/EU";
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
@@ -43,7 +43,10 @@ public class WarcraftlogsClient {
                 .queryParam("metric", (metric==null)?defaultMetric:metric);;
         UriComponents uriComponents = builder.buildAndExpand(characterName,serverName);
         Shot[] shots = restTemplate.getForObject(uriComponents.toString(),Shot[].class);
-        Map<Long,List<Shot>> fights = Arrays.asList(shots).stream().collect(Collectors.groupingBy(Shot::getEncounter));
+        List<Shot> list = Arrays.asList(shots);
+        list = list.stream().filter((s)->(s.getDifficulty().equals(difficulty))).collect(Collectors.toList());
+        Map<Long,List<Shot>> fights = list.stream().collect(Collectors.groupingBy(Shot::getEncounter));
+
         List<Shot> result = new ArrayList<>();
         for (Map.Entry<Long,List<Shot>> entry:fights.entrySet()){
             result.add(entry.getValue().stream().min(Comparator.comparing(Shot::getRank)).get());

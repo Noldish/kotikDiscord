@@ -67,7 +67,7 @@ public class DiscordService {
     private MessageBuilder messageBuilder;
     private EventDispatcher eventDispatcher;
     private IVoiceChannel voiceChannel;
-    
+
     @javax.annotation.Resource
     private Environment env;
 
@@ -119,20 +119,20 @@ public class DiscordService {
     }
 
     @PreDestroy
-    public void shutdown() throws DiscordException, RateLimitException{
+    public void shutdown() throws DiscordException, RateLimitException {
         if (initialized) {
-        System.out.println("Stopping DiscordService");
-        if (login) {
-            iDiscordClient.logout();
-            initialized = false;
-            login = false;
-        }
+            System.out.println("Stopping DiscordService");
+            if (login) {
+                iDiscordClient.logout();
+                initialized = false;
+                login = false;
+            }
         } else {
             System.out.println("DiscordService is not initialized");
-    }
+        }
     }
 
-    public void sendMessage(String message, IChannel channel){
+    public void sendMessage(String message, IChannel channel) {
         try {
             messageBuilder.withContent(message);
             messageBuilder.withChannel(channel);
@@ -142,9 +142,9 @@ public class DiscordService {
         }
     }
 
-    public void leaveAllVoiceChannels(){
+    public void leaveAllVoiceChannels() {
         List<IVoiceChannel> channels = iDiscordClient.getConnectedVoiceChannels();
-        for (IVoiceChannel channel:channels){
+        for (IVoiceChannel channel : channels) {
             channel.leave();
         }
     }
@@ -167,7 +167,7 @@ public class DiscordService {
         }
     }
 
-    public void registerUsers(){
+    public void registerUsers() {
         //Update user list with new nicknames or add new users to DB from channel mainchannel
         for (IUser iUser : iDiscordClient.getChannelByID(mainchannel).getUsersHere()) {
             if (userService.getUsers().containsKey(iUser.getID())) {
@@ -183,19 +183,21 @@ public class DiscordService {
         }
     }
 
-    public void showRanking(IMessage message){
+    public void showRanking(IMessage message) {
 
         List<Guild> guilds = wowprogress.getGuildRanking();
         StringBuilder sb = new StringBuilder();
         guilds = guilds.stream().limit(10).collect(Collectors.toList());
         sb.append("```Markdown\n");
-        for(Guild guild:guilds){
-            sb.append("* "+guild.toString() + "\n");
+        for (Guild guild : guilds) {
+            sb.append("* " + guild.toString() + "\n");
         }
         sb.append("```");
         System.out.println(sb.toString());
-        sendMessage(sb.toString(),message.getChannel());
-    };
+        sendMessage(sb.toString(), message.getChannel());
+    }
+
+    ;
 
 
     public UserService getUserService() {
@@ -218,34 +220,42 @@ public class DiscordService {
 
         List<String> params = BotUtils.getCommandParams(message.getContent());
 
-        if(params.size()<2) {
-            sendMessage("Ох тыж Валера. Параметры: ник;сервер",message.getChannel());
+        if (params.size() < 2) {
+            sendMessage("Ох тыж Валера. Параметры: ник;сервер", message.getChannel());
             return;
         }
 
         String characterName = params.get(0);
         String serverName = params.get(1);
         String metric = null;
-        if(params.size()>2){
-            metric=params.get(2);
+        Long difficulty = 5l;
+        if (params.size() > 2) {
+            metric = params.get(2);
         }
+
         StringBuilder sb = new StringBuilder();
         sb.append("```Markdown\n");
 
-        List<Shot> shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"10");
+        if (params.size() > 3) {
+            difficulty = 4l;
+        }
+
+
+        List<Shot> shots = warcraftlogs.getShotsForPlayer(characterName, serverName, metric, "10", difficulty);
         sb.append("\n               Изумрудный Кошмар: \n\n");
-        for(Shot shot:shots){
-            sb.append("* "+shot.toString() + "\n");
+        for (Shot shot : shots) {
+            sb.append("* " + shot.toString() + "\n");
         }
 
         sb.append("\n               Испытание Доблести: \n\n");
-        shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"12");
-        for(Shot shot:shots){
-            sb.append("* "+shot.toString() + "\n");
+        shots = warcraftlogs.getShotsForPlayer(characterName, serverName, metric, "12", difficulty);
+        for (Shot shot : shots) {
+            sb.append("* " + shot.toString() + "\n");
         }
 
+
         sb.append("```");
-        sendMessage(sb.toString(),message.getChannel());
+        sendMessage(sb.toString(), message.getChannel());
 
     }
 }

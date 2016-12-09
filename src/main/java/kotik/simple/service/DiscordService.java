@@ -218,6 +218,8 @@ public class DiscordService {
 
         List<String> params = BotUtils.getCommandParams(message.getContent());
 
+        if(params.size()<2) sendMessage("Ох тыж Валера. Параметры: ник;сервер",message.getChannel());
+
         String characterName = params.get(0);
         String serverName = params.get(1);
         String metric = null;
@@ -228,12 +230,12 @@ public class DiscordService {
         sb.append("```Markdown\n");
 
         List<Shot> shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"10");
-        sb.append("\n         Изумрудный Кошмар: \n\n");
+        sb.append("\n               Изумрудный Кошмар: \n\n");
         for(Shot shot:shots){
             sb.append("* "+shot.toString() + "\n");
         }
 
-        sb.append("\n         Испытание Доблести: \n\n");
+        sb.append("\n               Испытание Доблести: \n\n");
         shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"12");
         for(Shot shot:shots){
             sb.append("* "+shot.toString() + "\n");

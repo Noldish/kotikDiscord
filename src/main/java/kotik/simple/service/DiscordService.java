@@ -10,6 +10,9 @@ import javax.annotation.PreDestroy;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.JsonSyntaxException;
+import kotik.simple.BotUtils;
+import kotik.simple.client.warcraftlogs.WarcraftlogsClient;
+import kotik.simple.client.warcraftlogs.objects.Shot;
 import kotik.simple.client.wowprogress.WowprogressClient;
 import kotik.simple.client.wowprogress.objects.Guild;
 import kotik.simple.listener.ChatListener;
@@ -81,6 +84,8 @@ public class DiscordService {
     @Autowired
     private WowprogressClient wowprogress;
 
+    @Autowired
+    private WarcraftlogsClient warcraftlogs;
 
     public EventDispatcher getEventDispatcher() {
         return eventDispatcher;
@@ -207,5 +212,35 @@ public class DiscordService {
 
     public void setMainchannel(String mainchannel) {
         this.mainchannel = mainchannel;
+    }
+
+    public void showRankingForPlayer(IMessage message) {
+
+        List<String> params = BotUtils.getCommandParams(message.getContent());
+
+        String characterName = params.get(0);
+        String serverName = params.get(1);
+        String metric = null;
+        if(params.size()>2){
+            metric=params.get(2);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("```Markdown\n");
+
+        List<Shot> shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"10");
+        sb.append("\n         Изумрудный Кошмар: \n\n");
+        for(Shot shot:shots){
+            sb.append("* "+shot.toString() + "\n");
+        }
+
+        sb.append("\n         Испытание Доблести: \n\n");
+        shots = warcraftlogs.getShotsForPlayer(characterName,serverName,metric,"12");
+        for(Shot shot:shots){
+            sb.append("* "+shot.toString() + "\n");
+        }
+
+        sb.append("```");
+        sendMessage(sb.toString(),message.getChannel());
+
     }
 }

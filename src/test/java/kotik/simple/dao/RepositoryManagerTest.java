@@ -8,10 +8,7 @@ import kotik.simple.service.CommandManager;
 import kotik.simple.service.commands.CommandInterface;
 import kotik.simple.service.commands.DeleteCommand;
 import kotik.simple.service.commands.TextCommand;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,6 +25,7 @@ import java.util.Map;
 @ActiveProfiles("Repository-test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DBConfig.class, loader = AnnotationConfigContextLoader.class)
+@Ignore
 public class RepositoryManagerTest {
 
     @Autowired

@@ -7,6 +7,7 @@ import kotik.simple.service.sound.SoundManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.Status;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ public class CommandManager {
     }
 
     public String handle() {
+        discordService.getiDiscordClient().changeStatus(Status.game("RPG with yr mom"));
         return "Anus sebe derni, pes";
     }
 

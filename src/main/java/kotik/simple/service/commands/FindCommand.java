@@ -36,6 +36,11 @@ public class FindCommand extends AbstractCommand {
             case "котика":
                 findKotik(message);
                 break;
+            case "крайнего":
+            case "руинера":
+            case "виноватого":
+                findRuinerCommand(message);
+                break;
             default:
                 findNull(message);
                 break;
@@ -71,5 +76,20 @@ public class FindCommand extends AbstractCommand {
         }
     }
 
+    private void findRuinerCommand(IMessage message) {
+
+        String EllId = "228216611641753600";
+        Double specialLuck = 0.8;
+        IUser iUser = message.getChannel().getUsersHere().get(randomGenerator.nextInt(message.getChannel().getUsersHere().size()));
+        Double luck = randomGenerator.nextDouble();
+        if (message.getAuthor().getID().equals(EllId)) {
+            luck = luck - specialLuck;
+        }
+        if ((luck > 0.2) && (message.getAuthor().getName() != iUser.getName())) {
+            getCommandManager().getDiscordService().sendMessage(iUser.getDisplayName(message.getGuild()) + " во всем виноват!", message.getChannel());
+        } else {
+            getCommandManager().getDiscordService().sendMessage(message.getAuthor().getDisplayName(message.getGuild()) + ", сам заруинил и ищешь крайнего?!", message.getChannel());
+        }
+    }
 
 }

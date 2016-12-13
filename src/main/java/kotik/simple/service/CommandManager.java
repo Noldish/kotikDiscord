@@ -32,9 +32,6 @@ public class CommandManager {
     private DiscordService discordService;
 
     @Autowired
-    LiarService liarService;
-
-    @Autowired
     CommandFactory commandFactory;
 
     @Autowired

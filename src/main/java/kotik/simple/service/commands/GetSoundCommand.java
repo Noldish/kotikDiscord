@@ -36,8 +36,7 @@ public class GetSoundCommand extends AbstractCommand {
     }
 
     private boolean isNoSoundSelected(String messageContext) {
-        if (BotUtils.getCommandParams(messageContext).isEmpty()) return true;
-        else return false;
+         return BotUtils.getCommandParams(messageContext).isEmpty()?true:false;
     }
 
 }

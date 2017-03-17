@@ -102,6 +102,12 @@ public class DiscordService {
             clientBuilder.withToken(TOKEN);
             if (login) {
                 iDiscordClient = clientBuilder.login();
+                try {
+					iDiscordClient.login();
+				} catch (RateLimitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             } else {
                 iDiscordClient = clientBuilder.build();
                 login = true;

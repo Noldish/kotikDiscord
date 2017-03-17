@@ -36,7 +36,6 @@ import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.api.internal.DiscordEndpoints;
 import sx.blah.discord.api.internal.DiscordUtils;
 import sx.blah.discord.api.internal.Requests;
-import sx.blah.discord.api.internal.json.responses.MessageResponse;
 import sx.blah.discord.handle.audio.IAudioManager;
 import sx.blah.discord.handle.audio.IAudioProvider;
 import sx.blah.discord.handle.audio.impl.DefaultProvider;
@@ -105,7 +104,6 @@ public class DiscordService {
                 iDiscordClient = clientBuilder.login();
             } else {
                 iDiscordClient = clientBuilder.build();
-                iDiscordClient.login();
                 login = true;
             }
             messageBuilder = new MessageBuilder(iDiscordClient);
@@ -146,24 +144,6 @@ public class DiscordService {
         List<IVoiceChannel> channels = iDiscordClient.getConnectedVoiceChannels();
         for (IVoiceChannel channel : channels) {
             channel.leave();
-        }
-    }
-
-    public IMessage sendBytesAsFile(IChannel channel, byte[] bytes, String mime, String filename) throws JsonSyntaxException, RateLimitException, DiscordException, MissingPermissionsException {
-        DiscordUtils.checkPermissions(iDiscordClient, channel, EnumSet.of(Permissions.SEND_MESSAGES, Permissions.ATTACH_FILES));
-
-        if (iDiscordClient.isReady()) {
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create().addBinaryBody("file", bytes, ContentType.create(mime), filename);
-            HttpEntity fileEntity = builder.build();
-            MessageResponse response = DiscordUtils.GSON.fromJson(Requests.GENERAL_REQUESTS.POST.makeRequest(
-                    DiscordEndpoints.CHANNELS + channel.getID() + "/messages",
-                    fileEntity, new BasicNameValuePair("authorization", iDiscordClient.getToken())), MessageResponse.class);
-            IMessage message = DiscordUtils.getMessageFromJSON(iDiscordClient, channel, response);
-            iDiscordClient.getDispatcher().dispatch(new MessageSendEvent(message));
-            return message;
-        } else {
-            Discord4J.LOGGER.error("Bot has not signed in yet!");
-            return null;
         }
     }
 
